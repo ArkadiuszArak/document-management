@@ -8,8 +8,9 @@ public class HelloWorld {
         System.out.println("Hello World");
         System.out.println("Hello World !!!!!!");
         
-        public void myClass(){
-            System.out.println("Hello World");
-        }
+
+    }
+    public void myClass(){
+        System.out.println("Hello World");
     }
 }
