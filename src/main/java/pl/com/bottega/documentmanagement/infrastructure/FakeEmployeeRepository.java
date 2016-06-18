@@ -1,5 +1,6 @@
 package pl.com.bottega.documentmanagement.infrastructure;
 
+import org.springframework.stereotype.Repository;
 import pl.com.bottega.documentmanagement.domain.Employee;
 import pl.com.bottega.documentmanagement.domain.EmployeeId;
 import pl.com.bottega.documentmanagement.domain.EmployeeRepository;
@@ -7,6 +8,7 @@ import pl.com.bottega.documentmanagement.domain.EmployeeRepository;
 /**
  * Created by arkadiuszarak on 18/06/2016.
  */
+@Repository
 public class FakeEmployeeRepository implements EmployeeRepository {
     @Override
     public void save(Employee employee) {

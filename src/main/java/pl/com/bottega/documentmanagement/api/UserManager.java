@@ -2,6 +2,8 @@ package pl.com.bottega.documentmanagement.api;
 
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import pl.com.bottega.documentmanagement.domain.Employee;
 import pl.com.bottega.documentmanagement.domain.EmployeeId;
 import pl.com.bottega.documentmanagement.domain.EmployeeRepository;
@@ -9,10 +11,11 @@ import pl.com.bottega.documentmanagement.domain.EmployeeRepository;
 /**
  * Created by maciuch on 12.06.16.
  */
+@Service
 public class UserManager {
 
     private EmployeeRepository employeeRepository;
-
+    @Autowired
     public UserManager(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
