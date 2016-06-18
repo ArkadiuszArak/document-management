@@ -51,6 +51,8 @@ public class DocumentFlowProcess {
         checkNotNull(documentNumber);
         checkNotNull(ids);
 
+/*        Document document = documentRepository.load(documentNumber);
+        document.publish();*/
 
     }
 
