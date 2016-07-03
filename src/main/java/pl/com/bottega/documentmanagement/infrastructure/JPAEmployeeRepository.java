@@ -9,17 +9,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- * Created by arkadiuszarak on 19/06/2016.
+ * Created by maciuch on 19.06.16.
  */
 @Repository
 public class JPAEmployeeRepository implements EmployeeRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
-
-/*    public JPAEmployeeRepository(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }*/
 
     @Override
     public void save(Employee employee) {
@@ -33,19 +29,23 @@ public class JPAEmployeeRepository implements EmployeeRepository {
 
     @Override
     public boolean isLoginOccupied(String login) {
-        return entityManager.createQuery("select count (e) " +
-                "from Employee e " +
-                "WHERE login=:login",
-                Long.class).
+        return entityManager.
+                createQuery("SELECT count(e) " +
+                                "FROM Employee e " +
+                                "WHERE login=:login",
+                        Long.class).
                 setParameter("login", login).
                 getSingleResult() > 0;
     }
 
     @Override
-    public Employee findByLoginAndPassword(String login, String password) {
-        return entityManager.createQuery("SELECT e From Employee e where login=:login and hashedPassword=:pwd", Employee.class).
+    public Employee findByLoginAndPassword(String login, String hashedPassword) {
+        return entityManager.
+                createQuery("FROM Employee " +
+                        "WHERE login=:login AND hashedPassword=:pwd",
+                        Employee.class).
                 setParameter("login", login).
-                setParameter("pwd", password).
+                setParameter("pwd", hashedPassword).
                 getSingleResult();
     }
 }

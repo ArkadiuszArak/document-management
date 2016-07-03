@@ -3,9 +3,8 @@ package pl.com.bottega.documentmanagement.domain;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by arkadiuszarak on 18/06/2016.
+ * Created by maciuch on 18.06.16.
  */
-
 public class QEPDocumentNumberGenerator implements DocumentNumberGenerator {
     @Override
     public DocumentNumber generate() {

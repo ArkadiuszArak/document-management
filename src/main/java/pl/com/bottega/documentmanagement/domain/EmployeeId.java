@@ -14,9 +14,10 @@ public class EmployeeId implements Serializable {
     @GeneratedValue
     private Long id;
 
-    private EmployeeId(){}
+    private EmployeeId() {}
 
     public EmployeeId(Long id) {
         this.id = id;
     }
+
 }

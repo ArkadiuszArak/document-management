@@ -32,15 +32,17 @@
     <context:component-scan base-package="pl.com.bottega.documentmanagement"/>
     <tx:annotation-driven/>
 
-    <context:property-placeholder location="classpath:jdbc.properties, application.properties"/>
+    <context:property-placeholder location="classpath:application.properties,classpath:jdbc.properties"/>
 
-    <bean id="documentNumberGenerator" class="${documentNumberGeneratorClass}"/>
+    <bean id="documentNumberGenerator" class="${documentNumberGeneratorClass}">
+    </bean>
 
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
         <property name="url" value="${jdbc.url}"/>
         <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
+        <property name="maxTotal" value="5" />
     </bean>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">

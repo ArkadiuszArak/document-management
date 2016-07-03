@@ -9,14 +9,14 @@ import static com.google.common.base.Preconditions.checkState;
  * Created by maciuch on 12.06.16.
  */
 @Entity
-
 public class Employee {
-    private String login;
-    private String hashedPassword;
+
     @EmbeddedId
     private EmployeeId employeeId;
+    private String hashedPassword;
+    private String login;
 
-private Employee(){}
+    private Employee() {}
 
     public Employee(String login, String hashedPassword, EmployeeId employeeId) {
         this.login = login;
@@ -24,13 +24,14 @@ private Employee(){}
         this.employeeId = employeeId;
     }
 
-    public boolean isRegistered(){
+    public boolean isRegistered() {
         return login != null;
     }
 
-    public void setupAccount(String login, String password){
+    public void setupAccount(String login, String password) {
         checkState(!isRegistered());
         this.login = login;
         this.hashedPassword = password;
     }
+
 }
