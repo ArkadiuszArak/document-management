@@ -4,6 +4,7 @@ import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.com.bottega.documentmanagement.domain.Employee;
 import pl.com.bottega.documentmanagement.domain.EmployeeId;
 import pl.com.bottega.documentmanagement.domain.EmployeeRepository;
@@ -14,12 +15,14 @@ import pl.com.bottega.documentmanagement.domain.EmployeeRepository;
 @Service
 public class UserManager {
 
+    private Employee currentEmployee;
     private EmployeeRepository employeeRepository;
     @Autowired
     public UserManager(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
 
+    @Transactional
     public SigneupResultDto signup(String login, String password, EmployeeId employeeId){
         Employee employee = employeeRepository.findByEmployeeId(employeeId);
         if (employee == null)
@@ -55,13 +58,26 @@ public class UserManager {
         return Hashing.sha1().hashString(password, Charsets.UTF_8).toString();
     }
 
-    public void login(String login, String password){
 
+    public SigneupResultDto login(String login, String password){
+        this.currentEmployee  = employeeRepository.findByLoginAndPassword(login, hashedPassword(password));
+        if (this.currentEmployee() == null)
+            return faild("Login or pass incorrect");
+        else
+            return success();
+    }
+
+    @Override
+    public String toString() {
+        return "UserManager{" +
+                "currentEmployee=" + currentEmployee +
+                ", employeeRepository=" + employeeRepository +
+                '}';
     }
 
     public Employee currentEmployee() {
 
-        return null;
+        return this.currentEmployee;
     }
 
 }
