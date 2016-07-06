@@ -18,8 +18,8 @@ public class UpdateDocumentController {
     }
 
     @PostMapping
-    public void update(@PathVariable DocumentNumber documentId, @RequestBody DocumentRequest documentRequest){
-        DocumentNumber documentNumber = new DocumentNumber(documentId.getNumber());
+    public void update(@PathVariable String documentId, @RequestBody DocumentRequest documentRequest){
+        DocumentNumber documentNumber = new DocumentNumber(documentId);
         documentFlowProcess.change(documentNumber, documentRequest.getTitle(), documentRequest.getContent());
     }
 }
