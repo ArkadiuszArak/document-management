@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document>
+    <id>id="100"</id>
+    <employee>
+        <name>Tomasz</name>
+        <lastName>As</lastName>
+        <telephone>0000</telephone>
+    </employee>
+    <content>body="gdskbgksdbgksdbg"</content>
+</document>
