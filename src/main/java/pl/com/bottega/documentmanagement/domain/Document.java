@@ -13,8 +13,11 @@ public class Document {
     @Id
     @GeneratedValue
     private Long id;
+
     private DocumentNumber documentNumber;
+
     private String content;
+
     private String title;
     @Enumerated(EnumType.ORDINAL)
     private DocumentStatus documentStatus;
@@ -25,27 +28,35 @@ public class Document {
     @ManyToOne
     private Employee verificator;
 
+    @Enumerated(EnumType.STRING)
+    private DocumentStatus status;
+
+    @ManyToOne
+    private Employee creator;
+
+    @ManyToOne
+    private Employee verificator;
+
     private Document() {
     }
 
-    public Document(DocumentNumber documentNumber, String content, String title, Employee crator) {
-
+    public Document(DocumentNumber documentNumber, String content, String title, Employee creator) {
         this.documentNumber = documentNumber;
         this.content = content;
         this.title = title;
-        this.creator = crator;
-        this.documentStatus = DocumentStatus.DRAFT;
+        this.creator = creator;
+        this.status = DocumentStatus.DRAFT;
     }
 
     public void change(String title, String content) {
         this.title = title;
         this.content = content;
-        this.documentStatus = DocumentStatus.DRAFT;
+        this.status = DocumentStatus.DRAFT;
     }
 
     public void verify(Employee employee) {
         this.verificator = employee;
-        this.documentStatus = DocumentStatus.VERIFIED;
+        this.status = DocumentStatus.VERIFIED;
     }
 
     public void confirm(Employee conirmator) {

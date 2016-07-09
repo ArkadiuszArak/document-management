@@ -26,4 +26,5 @@ public class DocumentNumber {
     public String getNumber() {
         return number;
     }
+
 }

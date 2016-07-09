@@ -9,9 +9,8 @@ import pl.com.bottega.documentmanagement.api.UserManager;
 import pl.com.bottega.documentmanagement.domain.EmployeeId;
 
 /**
- * Created by arkadiuszarak on 03/07/2016.
+ * Created by maciuch on 03.07.16.
  */
-
 @RestController
 @RequestMapping("/employees")
 public class EmployeesController {
@@ -23,7 +22,7 @@ public class EmployeesController {
     }
 
     @PutMapping
-    public SignupResultDto signup(@RequestBody SignupRequest signupRequest){
+    public SignupResultDto signup(@RequestBody SignupRequest signupRequest) {
         EmployeeId employeeId = new EmployeeId(signupRequest.getEmployeeId());
         return userManager.signup(signupRequest.getLogin(), signupRequest.getPassword(), employeeId);
     }

@@ -1,8 +1,10 @@
 package pl.com.bottega.documentmanagement.domain;
 
 /**
- * Created by arkadiuszarak on 06/07/2016.
+ * Created by maciuch on 07.07.16.
  */
 public enum DocumentStatus {
-    DRAFT, VERIFIED;
+
+    DRAFT, VERIFIED
+
 }
