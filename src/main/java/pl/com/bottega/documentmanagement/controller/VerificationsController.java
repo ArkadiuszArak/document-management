@@ -8,7 +8,7 @@ import pl.com.bottega.documentmanagement.domain.DocumentNumber;
  * Created by arkadiuszarak on 06/07/2016.
  */
 @RestController
-@RequestMapping("/documents/{id}/verification")
+@RequestMapping("/documents/{documentNb}/verifications")
 public class VerificationsController {
 
     private DocumentFlowProcess documentFlowProcess;
@@ -18,7 +18,8 @@ public class VerificationsController {
     }
 
     @PutMapping
-    public void create(@PathVariable DocumentNumber documentId){
-        documentFlowProcess.verify(documentId);
+    public void create(@PathVariable String documentNb){
+        DocumentNumber documentNumber = new DocumentNumber(documentNb);
+        documentFlowProcess.verify(documentNumber);
     }
 }

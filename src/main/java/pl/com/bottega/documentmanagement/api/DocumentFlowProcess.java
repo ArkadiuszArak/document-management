@@ -30,7 +30,7 @@ public class DocumentFlowProcess {
         checkNotNull(content);
 
         DocumentNumber documentNumber = documentNumberGenerator.generate();
-        Document document = new Document(documentNumber, title, content, userManager.currentEmployee(), DocumentStatus.DRAFT);
+        Document document = new Document(documentNumber, title, content, userManager.currentEmployee());
         documentRepository.save(document);
 
         return documentNumber;
@@ -47,6 +47,7 @@ public class DocumentFlowProcess {
         documentRepository.save(document);
     }
 
+    @Transactional
     public void verify(DocumentNumber documentNumber) {
         checkNotNull(documentNumber);
 

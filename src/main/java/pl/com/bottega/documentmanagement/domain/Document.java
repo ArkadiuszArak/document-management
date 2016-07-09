@@ -28,13 +28,13 @@ public class Document {
     private Document() {
     }
 
-    public Document(DocumentNumber documentNumber, String content, String title, Employee crator, DocumentStatus documentStatus) {
+    public Document(DocumentNumber documentNumber, String content, String title, Employee crator) {
 
         this.documentNumber = documentNumber;
         this.content = content;
         this.title = title;
         this.creator = crator;
-        this.documentStatus = documentStatus;
+        this.documentStatus = DocumentStatus.DRAFT;
     }
 
     public void change(String title, String content) {
