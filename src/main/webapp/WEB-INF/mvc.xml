@@ -6,16 +6,17 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <!-- you can't call it objectMapper for some reason -->
     <bean name="jacksonObjectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
         <property name="featuresToDisable">
             <array>
-                <util:constant static-field="com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS"/>
+                <util:constant
+                        static-field="com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS"/>
             </array>
         </property>
+        <property name="simpleDateFormat" value="yyyy-MM-dd hh:mm"/>
     </bean>
 
-    <!-- setup spring MVC -->
+
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -23,7 +24,8 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
-    <mvc:default-servlet-handler />
+
+    <mvc:default-servlet-handler/>
 
     <import resource="classpath:application.xml"/>
 
