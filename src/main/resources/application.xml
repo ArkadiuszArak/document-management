@@ -42,7 +42,7 @@
         <property name="url" value="${jdbc.url}"/>
         <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
-        <property name="maxTotal" value="5" />
+        <property name="maxTotal" value="5"/>
     </bean>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -61,13 +61,15 @@
     </bean>
 
     <aop:config>
-        <aop:aspect id="authMethodAspect" ref="authAspect">
-            <aop:pointcut id="authMetod" expression="@annotation(pl.com.bottega.documentmanagement.api.RequiresAuth)" />
-            <aop:before pointcut-ref="authMetod" method="checkAuth" />
+        <aop:aspect id="a1" ref="authAspect">
+            <aop:pointcut id="authMethod" expression="@annotation(pl.com.bottega.documentmanagement.api.RequiresAuth)"/>
+
+            <aop:before pointcut-ref="authMethod" method="checkAuth"/>
         </aop:aspect>
 
-        <!--aop:aspect id="authClassAspect" ref="authAspect">
+        <!--aop:aspect id="a2" ref="authAspect">
             <aop:pointcut id="authClass" expression="@target(pl.com.bottega.documentmanagement.api.RequiresAuth)" />
+
             <aop:before pointcut-ref="authClass" method="checkAuth" />
         </aop:aspect-->
 

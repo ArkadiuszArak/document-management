@@ -21,12 +21,8 @@ public class Document {
 
     private String title;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt, updatedAt, verifiedAt;
-
-    @Enumerated(EnumType.ORDINAL)
-    private DocumentStatus documentStatus;
-
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date createdAt, verifiedAt, updatedAt;
 
     @Enumerated(EnumType.STRING)
     private DocumentStatus status;
