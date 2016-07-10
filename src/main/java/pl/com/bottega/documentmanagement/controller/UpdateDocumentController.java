@@ -1,12 +1,15 @@
+/*
 package pl.com.bottega.documentmanagement.controller;
 
 import org.springframework.web.bind.annotation.*;
 import pl.com.bottega.documentmanagement.api.DocumentFlowProcess;
 import pl.com.bottega.documentmanagement.domain.DocumentNumber;
 
+*/
 /**
  * Created by arkadiuszarak on 05/07/2016.
- */
+ *//*
+
 @RestController
 @RequestMapping("/documents/{documentId}")
 public class UpdateDocumentController {
@@ -22,4 +25,4 @@ public class UpdateDocumentController {
         DocumentNumber documentNumber = new DocumentNumber(documentId);
         documentFlowProcess.change(documentNumber, documentRequest.getTitle(), documentRequest.getContent());
     }
-}
+}*/

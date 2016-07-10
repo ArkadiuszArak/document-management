@@ -12,6 +12,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by maciuch on 12.06.16.
  */
 @Service
+
 public class DocumentFlowProcess {
 
     private DocumentNumberGenerator documentNumberGenerator;
