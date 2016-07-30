@@ -1,8 +1,10 @@
+/*
 package pl.com.bottega.documentmanagement.infrastructure;
 
 import org.springframework.stereotype.Component;
 import pl.com.bottega.documentmanagement.api.DocumentCriteria;
 import pl.com.bottega.documentmanagement.api.DocumentDto;
+import pl.com.bottega.documentmanagement.api.DocumentSearchResult;
 import pl.com.bottega.documentmanagement.api.DocumentsCatalog;
 import pl.com.bottega.documentmanagement.domain.DocumentNumber;
 
@@ -14,9 +16,11 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+*/
 /**
  * Created by Admin on 25.07.2016.
- */
+ *//*
+
 
 //@Component
 public class JPQLDocumentsCatalog implements DocumentsCatalog {
@@ -40,7 +44,7 @@ public class JPQLDocumentsCatalog implements DocumentsCatalog {
     }
 
     @Override
-    public Iterable<DocumentDto> find(DocumentCriteria documentCriteria) {
+    public DocumentSearchResult find(DocumentCriteria documentCriteria) {
         checkNotNull(documentCriteria);
         String jpql = buildQuery(documentCriteria);
         Query query = entityManager.createQuery(jpql);
@@ -125,4 +129,4 @@ public class JPQLDocumentsCatalog implements DocumentsCatalog {
         }
     }
 
-}
+}*/

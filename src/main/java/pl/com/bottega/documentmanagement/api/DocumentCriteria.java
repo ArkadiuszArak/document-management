@@ -9,12 +9,16 @@ import java.util.Date;
  */
 public class DocumentCriteria {
 
+    private static final int DEFAULT_PER_PAGE = 2;
+    private static final int DEFAULT_PAGE_NUMBER = 1;
     private DocumentStatus status;
     private Long verifiedBy;
     private Long createdBy;
     private Date createdFrom, createdUntil;
     private Date verifiedFrom, verifiedUntil;
     private String query;
+    private int pageNumber = DEFAULT_PER_PAGE;
+    private int perPage = DEFAULT_PAGE_NUMBER;
 
     public DocumentStatus getStatus() {
         return status;
@@ -70,6 +74,22 @@ public class DocumentCriteria {
 
     public void setVerifiedUntil(Date verifiedUntil) {
         this.verifiedUntil = verifiedUntil;
+    }
+
+    public int getPageNumber() {
+        return pageNumber;
+    }
+
+    public int getPerPage() {
+        return perPage;
+    }
+
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    public void setPerPage(int perPage) {
+        this.perPage = perPage;
     }
 
     public String getQuery() {

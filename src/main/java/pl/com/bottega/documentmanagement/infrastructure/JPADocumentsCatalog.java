@@ -1,10 +1,9 @@
 package pl.com.bottega.documentmanagement.infrastructure;
 
+import org.hibernate.query.Query;
+import org.hibernate.query.spi.QueryImplementor;
 import org.springframework.stereotype.Component;
-import pl.com.bottega.documentmanagement.api.DocumentCriteria;
-import pl.com.bottega.documentmanagement.api.DocumentDto;
-import pl.com.bottega.documentmanagement.api.DocumentsCatalog;
-import pl.com.bottega.documentmanagement.api.RequiresAuth;
+import pl.com.bottega.documentmanagement.api.*;
 import pl.com.bottega.documentmanagement.domain.*;
 
 import javax.persistence.EntityManager;
@@ -58,18 +57,28 @@ public class JPADocumentsCatalog implements DocumentsCatalog {
     }
 
     @Override
-    @RequiresAuth(roles = "STAFF")
-    public Iterable<DocumentDto> find(DocumentCriteria documentCriteria) {
+    //@RequiresAuth(roles = "STAFF")
+    public DocumentSearchResult find(DocumentCriteria documentCriteria) {
         checkNotNull(documentCriteria);
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<DocumentDto> query = builder.createQuery(DocumentDto.class);
         Root<Document> root = query.from(Document.class);
         selectDocumentDto(builder, query, root);
         applyCriteria(documentCriteria, builder, query, root);
-        return entityManager.createQuery(query).getResultList();
+
+        CriteriaQuery<Long> countQuery = builder.createQuery(Long.class);
+        Root<Document> countRoot = countQuery.from(Document.class);
+        countQuery.select(builder.count(countRoot));
+        applyCriteria(documentCriteria, builder, countQuery, countRoot);
+
+
+        int first = (documentCriteria.getPageNumber() - 1) * documentCriteria.getPerPage();
+
+        //return entityManager.createQuery(query).setFirstResult(first).setMaxResults(documentCriteria.getPerPage()).getResultList();
+        return new DocumentSearchResult(entityManager.createQuery(query).getResultList(), documentCriteria.getPerPage(), documentCriteria.getPageNumber(), entityManager.createQuery(countQuery).getSingleResult());
     }
 
-    private void applyCriteria(DocumentCriteria documentCriteria, CriteriaBuilder builder, CriteriaQuery<DocumentDto> query, Root<Document> root) {
+    private void applyCriteria(DocumentCriteria documentCriteria, CriteriaBuilder builder, CriteriaQuery query, Root<Document> root) {
         Collection<Predicate> predicates = new HashSet<>();
         applyStatus(documentCriteria, builder, root, predicates);
         applyCreatedBy(documentCriteria, builder, root, predicates);
@@ -79,7 +88,7 @@ public class JPADocumentsCatalog implements DocumentsCatalog {
         applyVerifiedFrom(documentCriteria, builder, root, predicates);
         applyVerifiedUntil(documentCriteria, builder, root, predicates);
         applyQuery(documentCriteria, builder, root, predicates);
-        applyNotDeleted(documentCriteria, builder, root, predicates);
+//        applyNotDeleted(documentCriteria, builder, root, predicates);
         query.where(predicates.toArray(new Predicate[]{}));
     }
 
