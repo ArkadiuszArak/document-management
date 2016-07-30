@@ -85,21 +85,6 @@ public class DocumentCriteria {
         this.verifiedUntil = verifiedUntil;
     }
 
-    public int getPageNumber() {
-        return pageNumber;
-    }
-
-    public int getPerPage() {
-        return perPage;
-    }
-
-    public void setPageNumber(int pageNumber) {
-        this.pageNumber = pageNumber;
-    }
-
-    public void setPerPage(int perPage) {
-        this.perPage = perPage;
-    }
 
     public String getQuery() {
         return query;

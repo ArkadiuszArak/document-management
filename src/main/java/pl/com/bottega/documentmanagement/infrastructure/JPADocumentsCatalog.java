@@ -1,14 +1,12 @@
 package pl.com.bottega.documentmanagement.infrastructure;
 
-import org.hibernate.query.Query;
-import org.hibernate.query.spi.QueryImplementor;
+
 import org.springframework.stereotype.Component;
 import pl.com.bottega.documentmanagement.api.*;
 import pl.com.bottega.documentmanagement.domain.*;
-
+import javax.persistence.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -72,8 +70,8 @@ public class JPADocumentsCatalog implements DocumentsCatalog {
         countQuery.select(builder.count(countRoot));
         applyCriteria(documentCriteria, builder, countQuery, countRoot);
 
-        org.hibernate.query.Query jpaQuery = entityManager.createQuery(query);
-        org.hibernate.query.Query jpaCountQuery = entityManager.createQuery(countQuery);
+        Query jpaQuery = entityManager.createQuery(query);
+        Query jpaCountQuery = entityManager.createQuery(countQuery);
 
         long first = (documentCriteria.getPageNumber() - 1) * documentCriteria.getPerPage();
         jpaQuery.setFirstResult((int)first);

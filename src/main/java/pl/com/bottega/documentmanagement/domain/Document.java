@@ -4,6 +4,7 @@ import pl.com.bottega.documentmanagement.api.DocumentDto;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by maciuch on 12.06.16.
@@ -37,6 +38,9 @@ public class Document {
 
     @ManyToOne
     private Employee deletor;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<Tag> tags;
 
     private Document() {
     }
@@ -77,4 +81,11 @@ public class Document {
         this.deleted = true;
     }
 
+    public void tag(Set<Tag> tags){
+        this.tags = tags;
+    }
+
+    public Set<Tag> tags(){
+        return tags;
+    }
 }

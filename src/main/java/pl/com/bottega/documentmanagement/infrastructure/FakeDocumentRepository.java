@@ -8,7 +8,7 @@ import pl.com.bottega.documentmanagement.domain.repositories.DocumentRepository;
 
 
 
-@Repository
+//@Repository
 public class FakeDocumentRepository implements DocumentRepository {
     @Override
     public void save(Document document) {
