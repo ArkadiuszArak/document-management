@@ -8,6 +8,7 @@ import pl.com.bottega.documentmanagement.domain.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -58,7 +59,7 @@ public class JPADocumentsCatalog implements DocumentsCatalog {
 
     @Override
     //@RequiresAuth(roles = "STAFF")
-    public DocumentSearchResult find(DocumentCriteria documentCriteria) {
+    public DocumentSearchResults find(DocumentCriteria documentCriteria) {
         checkNotNull(documentCriteria);
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<DocumentDto> query = builder.createQuery(DocumentDto.class);
@@ -71,11 +72,19 @@ public class JPADocumentsCatalog implements DocumentsCatalog {
         countQuery.select(builder.count(countRoot));
         applyCriteria(documentCriteria, builder, countQuery, countRoot);
 
+        Query jpaQuery = entityManager.createQuery(query);
+        Query jpaCountQuery = entityManager.createQuery(countQuery);
 
-        int first = (documentCriteria.getPageNumber() - 1) * documentCriteria.getPerPage();
+        long first = (documentCriteria.getPageNumber() - 1) * documentCriteria.getPerPage();
+        jpaQuery.setFirstResult((int)first);
+        jpaQuery.setMaxResults(documentCriteria.getPerPage().intValue());
 
-        //return entityManager.createQuery(query).setFirstResult(first).setMaxResults(documentCriteria.getPerPage()).getResultList();
-        return new DocumentSearchResult(entityManager.createQuery(query).getResultList(), documentCriteria.getPerPage(), documentCriteria.getPageNumber(), entityManager.createQuery(countQuery).getSingleResult());
+        return new DocumentSearchResults(jpaQuery.getResultList(),
+                documentCriteria.getPerPage(),
+                documentCriteria.getPageNumber(),
+                (Long) jpaCountQuery.getSingleResult()
+                );
+
     }
 
     private void applyCriteria(DocumentCriteria documentCriteria, CriteriaBuilder builder, CriteriaQuery query, Root<Document> root) {
