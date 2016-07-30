@@ -21,6 +21,7 @@ public class Document {
 
     private String title;
 
+    private boolean deleted;
 
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date createdAt, verifiedAt, updatedAt;
@@ -34,8 +35,8 @@ public class Document {
     @ManyToOne
     private Employee verificator;
 
-    @Column(columnDefinition = "boolean default false")
-    private boolean deleted = false;
+    @ManyToOne
+    private Employee deletor;
 
     private Document() {
     }
@@ -71,8 +72,9 @@ public class Document {
 
     }
 
-    public void archive(Employee employee){
-        this.deleted = false;
+    public void delete(Employee deletor) {
+        this.deletor = deletor;
+        this.deleted = true;
     }
 
 }

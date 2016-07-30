@@ -44,7 +44,7 @@ public class DocumentsController {
     }
 
     @DeleteMapping("/{documentNumber}")
-    public void delete(@PathVariable String documentNumber){
+    public void destroy(@PathVariable String documentNumber) {
         documentFlowProcess.archive(new DocumentNumber(documentNumber));
     }
 
