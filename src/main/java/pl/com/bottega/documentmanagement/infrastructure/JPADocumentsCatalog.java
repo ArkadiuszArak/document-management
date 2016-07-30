@@ -34,17 +34,7 @@ public class JPADocumentsCatalog implements DocumentsCatalog {
         CriteriaQuery<DocumentDto> query = builder.createQuery(DocumentDto.class);
         Root<Document> root = query.from(Document.class);
         query.where(builder.equal(root.get(Document_.documentNumber), documentNumber));
-        query.select(builder.construct(DocumentDto.class,
-                root.get(Document_.documentNumber).get(DocumentNumber_.number),
-                root.get(Document_.title),
-                root.get(Document_.content),
-                root.get(Document_.status),
-                root.get(Document_.createdAt),
-                root.get(Document_.verifiedAt),
-                root.get(Document_.updatedAt),
-                root.get(Document_.creator).get(Employee_.employeeId).get(EmployeeId_.id),
-                root.get(Document_.verificator).get(Employee_.employeeId).get(EmployeeId_.id)
-        ));
+        select(builder, query, root);
         return entityManager.createQuery(query).getSingleResult();
     }
 
@@ -55,29 +45,48 @@ public class JPADocumentsCatalog implements DocumentsCatalog {
         CriteriaQuery<DocumentDto> query = builder.createQuery(DocumentDto.class);
         Root<Document> root = query.from(Document.class);
         Collection<Predicate> predicates = new HashSet<>();
-        query.select(builder.construct(DocumentDto.class,
-                root.get(Document_.documentNumber).get(DocumentNumber_.number),
-                root.get(Document_.title),
-                root.get(Document_.content),
-                root.get(Document_.status),
-                root.get(Document_.createdAt),
-                root.get(Document_.verifiedAt),
-                root.get(Document_.updatedAt),
-                root.get(Document_.creator).get(Employee_.employeeId).get(EmployeeId_.id),
-                root.get(Document_.verificator).get(Employee_.employeeId).get(EmployeeId_.id)
-        ));
+        select(builder, query, root);
 
-        if (documentCriteria.isStatusDefined()) {
-            predicates.add(builder.equal(root.get(Document_.status), documentCriteria.getStatus()));
+        isStatusDefined(documentCriteria, builder, root, predicates);
+
+        isCreatedByDefined(documentCriteria, builder, root, predicates);
+
+        isCreatedDatesDefined(documentCriteria, builder, root, predicates);
+
+        isQueryDefined(documentCriteria, builder, root, predicates);
+
+        isCreatedFromDefined(documentCriteria, builder, root, predicates);
+
+        isCreatedUntilDefined(documentCriteria, builder, root, predicates);
+
+        query.where(predicates.toArray(new Predicate[]{}));
+        return entityManager.createQuery(query).getResultList();
+    }
+
+    private void isCreatedFromDefined(DocumentCriteria documentCriteria, CriteriaBuilder builder, Root<Document> root, Collection<Predicate> predicates){
+        if (documentCriteria.isCreatedFromDefined()){
+            predicates.add(builder.greaterThanOrEqualTo(root.get(Document_.createdAt),documentCriteria.getCreatedFrom()));
         }
+    }
 
-        if (documentCriteria.isCreatedByDefined()) {
-            predicates.add(builder.equal(
-                    root.get(Document_.creator).get(Employee_.employeeId).get(EmployeeId_.id),
-                    documentCriteria.getCreatedBy())
-            );
+    private void isCreatedUntilDefined(DocumentCriteria documentCriteria, CriteriaBuilder builder, Root<Document> root, Collection<Predicate> predicates){
+        if (documentCriteria.isCreatedUntilDefined()){
+            predicates.add(builder.lessThanOrEqualTo(root.get(Document_.createdAt), documentCriteria.getCreatedFrom()));
         }
+    }
 
+
+    private void isQueryDefined(DocumentCriteria documentCriteria, CriteriaBuilder builder, Root<Document> root, Collection<Predicate> predicates) {
+        if (documentCriteria.isQueryDefined()) {
+            //(content like "%query%" OR title like "%query%") AND () AND () AND ()
+            predicates.add(builder.or(
+                    builder.like(root.get(Document_.content), "%" + documentCriteria.getQuery() + "%"),
+                    builder.like(root.get(Document_.title), "%" + documentCriteria.getQuery() + "%")
+            ));
+        }
+    }
+
+    private void isCreatedDatesDefined(DocumentCriteria documentCriteria, CriteriaBuilder builder, Root<Document> root, Collection<Predicate> predicates) {
         if (documentCriteria.isCreatedDatesDefined()) {
             if (documentCriteria.isCreatedFromDefined()) {
                 predicates.add(builder.greaterThanOrEqualTo(
@@ -90,17 +99,34 @@ public class JPADocumentsCatalog implements DocumentsCatalog {
                 ));
             }
         }
-
-        if (documentCriteria.isQueryDefined()) {
-            //(content like "%query%" OR title like "%query%") AND () AND () AND ()
-            predicates.add(builder.or(
-                    builder.like(root.get(Document_.content), "%" + documentCriteria.getQuery() + "%"),
-                    builder.like(root.get(Document_.title), "%" + documentCriteria.getQuery() + "%")
-            ));
-        }
-
-        query.where(predicates.toArray(new Predicate[]{}));
-        return entityManager.createQuery(query).getResultList();
     }
 
+    private void isCreatedByDefined(DocumentCriteria documentCriteria, CriteriaBuilder builder, Root<Document> root, Collection<Predicate> predicates) {
+        if (documentCriteria.isCreatedByDefined()) {
+            predicates.add(builder.equal(
+                    root.get(Document_.creator).get(Employee_.employeeId).get(EmployeeId_.id),
+                    documentCriteria.getCreatedBy())
+            );
+        }
+    }
+
+    private void isStatusDefined(DocumentCriteria documentCriteria, CriteriaBuilder builder, Root<Document> root, Collection<Predicate> predicates) {
+        if (documentCriteria.isStatusDefined()) {
+            predicates.add(builder.equal(root.get(Document_.status), documentCriteria.getStatus()));
+        }
+    }
+
+    private void select(CriteriaBuilder builder, CriteriaQuery<DocumentDto> query, Root<Document> root) {
+        query.select(builder.construct(DocumentDto.class,
+                root.get(Document_.documentNumber).get(DocumentNumber_.number),
+                root.get(Document_.title),
+                root.get(Document_.content),
+                root.get(Document_.status),
+                root.get(Document_.createdAt),
+                root.get(Document_.verifiedAt),
+                root.get(Document_.updatedAt),
+                root.get(Document_.creator).get(Employee_.employeeId).get(EmployeeId_.id),
+                root.get(Document_.verificator).get(Employee_.employeeId).get(EmployeeId_.id)
+        ));
+    }
 }

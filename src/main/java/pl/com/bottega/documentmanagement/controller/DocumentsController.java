@@ -34,13 +34,18 @@ public class DocumentsController {
 
     @GetMapping("/{documentNumber}")
     public DocumentDto show(@PathVariable String documentNumber) {
-        return documentsCatalog.get(new DocumentNumber(documentNumber));
+        return (DocumentDto) documentsCatalog.get(new DocumentNumber(documentNumber));
     }
 
     // /documents?query=hospital&createdBy=40&verifiedBy=76&...&...
     @GetMapping
     public Iterable<DocumentDto> index(DocumentCriteria documentCriteria) {
         return documentsCatalog.find(documentCriteria);
+    }
+
+    @DeleteMapping("/{documentNumber}")
+    public void delete(@PathVariable String documentNumber){
+        documentFlowProcess.archive(new DocumentNumber(documentNumber));
     }
 
 }

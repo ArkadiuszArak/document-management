@@ -65,6 +65,10 @@ public class DocumentFlowProcess {
 
     public void archive(DocumentNumber documentNumber) {
         checkNotNull(documentNumber);
+
+        Document document = documentRepository.load(documentNumber);
+        document.archive(userManager.currentEmployee());
+        documentRepository.save(document);
     }
 
     public DocumentNumber createNewVersion(DocumentNumber documentNumber) {
