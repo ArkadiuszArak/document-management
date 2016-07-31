@@ -1,10 +1,11 @@
 package pl.com.bottega.documentmanagement.domain;
 
-import pl.com.bottega.documentmanagement.api.DocumentDto;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by maciuch on 12.06.16.
@@ -39,6 +40,7 @@ public class Document {
     @ManyToOne
     private Employee deletor;
 
+    //@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Tag> tags;
 
@@ -63,6 +65,7 @@ public class Document {
     }
 
     public void verify(Employee employee) {
+        checkArgument(employee != null);
         this.verificator = employee;
         this.status = DocumentStatus.VERIFIED;
         this.verifiedAt = new Date();
@@ -88,4 +91,34 @@ public class Document {
     public Set<Tag> tags(){
         return tags;
     }
+
+    public String content(){
+        return content;
+    }
+
+
+    public Employee creator(){
+        return creator;
+    }
+
+    public String title(){
+        return title;
+    }
+
+    public DocumentNumber number(){
+        return documentNumber;
+    }
+
+    public DocumentStatus status(){
+        return status;
+    }
+
+    public boolean delete(){
+        return deleted;
+    }
+
+    public Date verifiedAt(){
+        return verifiedAt;
+    }
+
 }

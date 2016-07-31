@@ -1,7 +1,6 @@
 package pl.com.bottega.documentmanagement.api;
 
 import com.google.common.base.Charsets;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Sets;
 import com.google.common.hash.Hashing;
 import org.springframework.context.annotation.Scope;
@@ -17,7 +16,6 @@ import pl.com.bottega.documentmanagement.domain.repositories.EmployeeRepository;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Created by maciuch on 12.06.16.
@@ -31,8 +29,15 @@ public class UserManager {
     private EmployeeRepository employeeRepository;
     private Employee currentEmployee;
 
-    public UserManager(EmployeeRepository employeeRepository) {
+    private EmployeeFactory employeeFactory;
+
+    private PasswordHasher passwordHasher;
+
+    public UserManager(EmployeeRepository employeeRepository, EmployeeFactory employeeFactory, PasswordHasher passwordHasher) {
+
         this.employeeRepository = employeeRepository;
+        this.employeeFactory = employeeFactory;
+        this.passwordHasher = passwordHasher;
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
@@ -53,7 +58,7 @@ public class UserManager {
         if (employeeRepository.isLoginOccupied(login))
             return failed("login is occupied");
         else {
-            Employee employee = new Employee(login, hashedPassword(password), employeeId);
+            Employee employee = employeeFactory.create(login, password, employeeId);
             employee.updateRoles(getRoles(INITIAL_ROLE));
             employeeRepository.save(employee);
             return success();
@@ -68,12 +73,10 @@ public class UserManager {
         return new SignupResultDto();
     }
 
-    private String hashedPassword(String password) {
-        return Hashing.sha1().hashString(password, Charsets.UTF_8).toString();
-    }
+
 
     public SignupResultDto login(String login, String password) {
-        this.currentEmployee = employeeRepository.findByLoginAndPassword(login, hashedPassword(password));
+        this.currentEmployee = employeeRepository.findByLoginAndPassword(login, passwordHasher.hashedPassword(password));
         if (this.currentEmployee == null)
             return failed("login or password incorrect");
         else
