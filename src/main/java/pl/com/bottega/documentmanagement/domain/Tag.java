@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
- * Created by arkadiuszarak on 30/07/2016.
+ * Created by maciuch on 30.07.16.
  */
 @Entity
 public class Tag {
@@ -16,11 +16,10 @@ public class Tag {
 
     private String name;
 
-    public Tag() {
-
-    }
+    private Tag() {}
 
     public Tag(String name) {
         this.name = name;
     }
+
 }

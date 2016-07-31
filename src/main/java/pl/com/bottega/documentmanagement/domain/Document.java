@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by maciuch on 12.06.16.
@@ -31,16 +30,15 @@ public class Document {
     @Enumerated(EnumType.STRING)
     private DocumentStatus status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Employee creator;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Employee verificator;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Employee deletor;
 
-    //@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Tag> tags;
 
@@ -84,41 +82,43 @@ public class Document {
         this.deleted = true;
     }
 
-    public void tag(Set<Tag> tags){
+    public void tag(Set<Tag> tags) {
         this.tags = tags;
     }
 
-    public Set<Tag> tags(){
+    public Set<Tag> tags() {
         return tags;
     }
 
-    public String content(){
+    public Employee verificator() {
+        return verificator;
+    }
+
+    public String content() {
         return content;
     }
 
-
-    public Employee creator(){
+    public Employee creator() {
         return creator;
     }
 
-    public String title(){
+    public String title() {
         return title;
     }
 
-    public DocumentNumber number(){
-        return documentNumber;
-    }
-
-    public DocumentStatus status(){
-        return status;
-    }
-
-    public boolean delete(){
+    public boolean deleted() {
         return deleted;
     }
 
-    public Date verifiedAt(){
-        return verifiedAt;
+    public DocumentNumber number() {
+        return documentNumber;
     }
 
+    public DocumentStatus status() {
+        return status;
+    }
+
+    public Date verifiedAt() {
+        return verifiedAt;
+    }
 }

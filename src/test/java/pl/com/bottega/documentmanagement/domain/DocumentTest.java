@@ -1,6 +1,5 @@
 package pl.com.bottega.documentmanagement.domain;
 
-import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -8,19 +7,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Date;
 
-import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 /**
- * Created by arkadiuszarak on 31/07/2016.
+ * Created by maciuch on 31.07.16.
  */
-
-//given
-
-//when
-
-//then
 @RunWith(MockitoJUnitRunner.class)
 public class DocumentTest {
 
@@ -31,58 +24,64 @@ public class DocumentTest {
     private Employee anyEmployee;
 
     private String anyContent = "test content";
+
     private String anyTitle = "test title";
 
-    @Test
-    public void shouldCreateDocumentWithInitialState(){
-        //given
+    private static Long EPS = 2L * 1000L;
 
-        //when
+    @Test
+    public void shouldCreateDocumentWithInitialState() {
+        // given
+
+        // when
         Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
-        //then
+
+        // then
         assertEquals(anyNumber, document.number());
         assertEquals(anyContent, document.content());
         assertEquals(anyTitle, document.title());
         assertEquals(anyEmployee, document.creator());
-        assertFalse(document.delete());
+        assertFalse(document.deleted());
         assertEquals(DocumentStatus.DRAFT, document.status());
     }
 
     @Test
-    public void shouldVerifyDocument(){
+    public void shouldVerifyDocument() {
         //given
         Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
-        //when
 
+        //when
         document.verify(anyEmployee);
+
         //then
+        assertTrue(Math.abs(new Date().getTime() - document.verifiedAt().getTime()) < EPS);
         assertEquals(DocumentStatus.VERIFIED, document.status());
-        assertNotNull(document.verifiedAt());
-        assertEquals(anyEmployee, document.creator());
+        assertEquals(anyEmployee, document.verificator());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldRequireVerificator(){
+    public void shouldRequireVerificator() {
         //given
         Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
-        //when
+
+        // when
         document.verify(null);
 
     }
 
     @Test
-    public void shouldRequireVerificatorOtherWay(){
+    public void shouldRequireVerificatorOtherWay() {
         //given
         Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
+
+        // when
         try {
-            //when
             document.verify(null);
         }
-        catch (IllegalArgumentException ex){
+        catch(IllegalArgumentException ex) {
             return;
         }
-
-        fail("IllegalArgumentException");
-
+        fail("IllegalArgumentException expected");
     }
+
 }
