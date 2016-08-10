@@ -51,4 +51,12 @@ public class Employee {
             return true;
         return !Arrays.stream(roleNames).anyMatch((roleName) -> !roles.contains(new Role(roleName)));
     }
+
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public String getLogin() {
+        return login;
+    }
 }

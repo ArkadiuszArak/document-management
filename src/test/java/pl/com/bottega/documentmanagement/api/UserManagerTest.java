@@ -24,6 +24,8 @@ public class UserManagerTest {
     private String occupiedLogin = "occupied login";
     private String freeLogin = "free login";
     private String anyPassword = "test";
+    private String testLogin = "test Login";
+    private String wrongPassword = "wrong one";
 
     @Mock
     private EmployeeId anyEmployeeId;
@@ -69,4 +71,56 @@ public class UserManagerTest {
         assertNull(signupResultDto.getFailureReason());
     }
 
+    @Test
+    public void shouldFailWhenEmployeeAlreadyRegistered(){
+        UserManager userManager = new UserManager(employeeRepository, employeeFactory, passwordHasher);
+        when(employeeRepository.findByEmployeeId(anyEmployeeId)).thenReturn(employee);
+        when(employee.isRegistered()).thenReturn(true);
+
+        SignupResultDto signupResultDto = userManager.signup(freeLogin, anyPassword, anyEmployeeId);
+
+        assertEquals("employee registered", signupResultDto.getFailureReason());
+    }
+
+    @Test
+    public void shouldSetupAccount(){
+        UserManager userManager = new UserManager(employeeRepository, employeeFactory, passwordHasher);
+        when(employeeRepository.findByEmployeeId(anyEmployeeId)).thenReturn(employee);
+        when(employee.isRegistered()).thenReturn(false);
+        employee.setupAccount(freeLogin, anyPassword);
+
+        SignupResultDto signupResultDto = userManager.signup(freeLogin, anyPassword, anyEmployeeId);
+
+        verify(employeeRepository).save(employee);
+        assertTrue(signupResultDto.isSuccess());
+        assertNull(signupResultDto.getFailureReason());
+    }
+
+    @Test
+    public void shouldLoginWhenLoginAndPasswordAreCorrect(){
+        //given
+        UserManager userManager = new UserManager(employeeRepository, employeeFactory, passwordHasher);
+        when(employeeRepository.findByLoginAndPassword(testLogin, passwordHasher.hashedPassword(anyPassword))).thenReturn(employee);
+
+        //when
+        SignupResultDto signupResultDto = userManager.login(testLogin, anyPassword);
+
+        //then
+        assertTrue(signupResultDto.isSuccess());
+        assertNull(signupResultDto.getFailureReason());
+    }
+
+    @Test
+    public void shouldNotLoginWhenLoginOrPasswordIncorrect(){
+        //given
+        UserManager userManager = new UserManager(employeeRepository, employeeFactory, passwordHasher);
+        when(employeeRepository.findByLoginAndPassword(testLogin, passwordHasher.hashedPassword(anyPassword))).thenReturn(null);
+
+        //when
+        SignupResultDto signupResultDto = userManager.login(testLogin, anyPassword);
+
+        //then
+        assertFalse(signupResultDto.isSuccess());
+        assertEquals("login or password incorrect", signupResultDto.getFailureReason());
+    }
 }

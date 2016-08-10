@@ -9,6 +9,7 @@ import java.util.Date;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -82,6 +83,27 @@ public class DocumentTest {
             return;
         }
         fail("IllegalArgumentException expected");
+    }
+
+    @Test
+    public void shouldChangeTitleAndContent(){
+        //given
+        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
+        //when
+        document.change("new Title", "new Content");
+        //then
+        assertNotEquals("new Title", anyTitle);
+        assertNotEquals("new Content", anyContent);
+    }
+
+    @Test
+    public void shouldDeleteDocument(){
+        //given
+        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
+        //when
+        document.delete(anyEmployee);
+        //then
+        assertTrue(document.deleted() == true);
     }
 
 }
