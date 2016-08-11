@@ -16,7 +16,7 @@ public class CreateDocument {
     public static void main(String[] args) {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[]{"application.xml"});
         UserManager userManager = applicationContext.getBean("userManager", UserManager.class);
-        userManager.signup("janek", "qwerty", new EmployeeId(50L));
+        userManager.signup("janek", "qwerty", new EmployeeId(80L));
         SignupResultDto result = userManager.login("janek", "qwerty");
         System.out.println(result);
         DocumentFlowProcess documentFlowProcess = applicationContext.getBean("documentFlowProcess", DocumentFlowProcess.class);

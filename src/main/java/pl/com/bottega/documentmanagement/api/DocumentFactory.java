@@ -1,5 +1,6 @@
 package pl.com.bottega.documentmanagement.api;
 
+import org.springframework.stereotype.Service;
 import pl.com.bottega.documentmanagement.domain.Document;
 import pl.com.bottega.documentmanagement.domain.DocumentNumber;
 import pl.com.bottega.documentmanagement.domain.DocumentNumberGenerator;
@@ -8,6 +9,7 @@ import pl.com.bottega.documentmanagement.domain.Employee;
 /**
  * Created by arkadiuszarak on 10/08/2016.
  */
+@Service
 public class DocumentFactory {
     private DocumentNumberGenerator documentNumberGenerator;
     private UserManager userManager;

@@ -33,11 +33,12 @@ public class DocumentFlowProcess {
         checkNotNull(title);
         checkNotNull(content);
 
-        DocumentNumber documentNumber = documentNumberGenerator.generate();
-        Document document = new Document(documentNumber, title, content, userManager.currentEmployee());
+        //DocumentNumber documentNumber = documentNumberGenerator.generate();
+        //Document document = new Document(documentNumber, title, content, userManager.currentEmployee());
+        Document document = documentFactory.createDocument(content, title);
         documentRepository.save(document);
 
-        return documentNumber;
+        return document.number();
     }
 
     @Transactional

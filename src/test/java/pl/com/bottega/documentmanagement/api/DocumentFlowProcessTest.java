@@ -11,9 +11,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by arkadiuszarak on 10/08/2016.
- */
 public class DocumentFlowProcessTest {
 
     private String anyContent = "test content";
@@ -38,7 +35,6 @@ public class DocumentFlowProcessTest {
     public void shouldCreateDocument(){
         DocumentFlowProcess documentFlowProcess = new DocumentFlowProcess(documentRepository, userManager, documentNumberGenerator, documentFactory);
         when(documentFactory.createDocument(anyContent, anyTitle)).thenReturn(document);
-       // documentRepository.save(document);
 
         DocumentNumber documentNumber = documentFlowProcess.create(anyTitle, anyContent);
 
