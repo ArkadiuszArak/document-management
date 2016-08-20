@@ -1,68 +1,131 @@
 package pl.com.bottega.documentmanagement.api;
 
+import com.google.common.collect.Sets;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import pl.com.bottega.documentmanagement.domain.Document;
-import pl.com.bottega.documentmanagement.domain.DocumentNumber;
-import pl.com.bottega.documentmanagement.domain.DocumentNumberGenerator;
+import pl.com.bottega.documentmanagement.domain.*;
 import pl.com.bottega.documentmanagement.domain.repositories.DocumentRepository;
+import pl.com.bottega.documentmanagement.domain.repositories.EmployeeRepository;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Created by maciuch on 17.08.16.
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class DocumentFlowProcessTest {
 
+    private DocumentFlowProcess documentFlowProcess;
+
     @Mock
     private DocumentRepository documentRepository;
-
-    private String anyContent = "test content";
-    private String anyTitle = "title";
-    private String newTitle = "new title";
-
-    private String newContent = "new content";
-
-    @Mock
-    private DocumentFactory documentFactory;
 
     @Mock
     private UserManager userManager;
 
     @Mock
-    private Document document;
+    private DocumentNumberGenerator documentNumberGenerator;
 
     @Mock
-    private DocumentNumberGenerator documentNumberGenerator;
+    private EmployeeRepository employeeRepository;
+
+    @Mock
+    private DocumentFactory documentFactory;
+
+    private String anyTitle = "xxxx";
+
+    private String anyContent = "cccc";
 
     @Mock
     private DocumentNumber documentNumber;
 
-    @Test
-    public void shouldCreateDocument() {
-        DocumentFlowProcess documentFlowProcess = new DocumentFlowProcess(documentRepository, userManager, documentNumberGenerator, documentFactory);
-        when(documentFactory.createDocument(anyContent, anyTitle)).thenReturn(document);
-        when(document.number()).thenReturn(documentNumber);
+    @Mock
+    private Document document;
 
-        DocumentNumber documentNr = documentFlowProcess.create(anyTitle, anyContent);
+    @Mock
+    private Employee employee;
 
-        verify(documentRepository).save(document);
-        assertNotNull(documentNr.getNumber());
+    @Before
+    public void setUp() throws Exception {
+        documentFlowProcess = new DocumentFlowProcess(documentRepository, userManager, documentFactory, employeeRepository);
     }
 
-/*    @Test
-    public void shouldChangeTitleAndContent(){
-        DocumentFlowProcess documentFlowProcess = new DocumentFlowProcess(documentRepository, userManager, documentNumberGenerator, documentFactory);
-        when(documentFactory.createDocument(anyContent, anyTitle)).thenReturn(document);
-        when(documentRepository.load(document.number())).thenReturn(document);
+    @Test
+    public void shouldCreateDocument() {
+        //given
+        when(documentFactory.create(anyTitle, anyContent)).thenReturn(document);
+        when(document.number()).thenReturn(documentNumber);
 
-        documentFlowProcess.change(document.number(), newTitle, newContent);
+        //when
+        DocumentNumber nr = documentFlowProcess.create(anyTitle, anyContent);
 
+        //then
         verify(documentRepository).save(document);
-        assertEquals(newTitle, document.title());
-    }*/
+        assertEquals(nr, documentNumber);
+    }
+
+    @Test
+    public void shouldUpdateDocument() {
+        //given
+        when(documentRepository.load(documentNumber)).thenReturn(document);
+
+        //when
+        documentFlowProcess.change(documentNumber, anyTitle, anyContent);
+
+        //then
+        verify(document).change(anyTitle, anyContent);
+        verify(documentRepository).save(document);
+    }
+
+    @Test
+    public void shouldVerifyDocument() {
+        //given
+        when(documentRepository.load(documentNumber)).thenReturn(document);
+        when(userManager.currentEmployee()).thenReturn(employee);
+
+        //when
+        documentFlowProcess.verify(documentNumber);
+
+        //then
+        verify(document).verify(employee);
+        verify(documentRepository).save(document);
+    }
+
+    @Test
+    public void shouldPublishDocument() {
+        //given
+        when(documentRepository.load(documentNumber)).thenReturn(document);
+        Set<EmployeeId> employeeIds = Sets.newHashSet(1L, 2L, 3L).stream().map(EmployeeId::new).collect(Collectors.toSet());
+        when(employeeRepository.findByEmployeeIds(employeeIds)).thenReturn(Sets.newHashSet());
+        when(userManager.currentEmployee()).thenReturn(employee);
+
+        //when
+        documentFlowProcess.publish(documentNumber, employeeIds);
+
+        //then
+        verify(document).publish(employee, employeeIds.stream().map(Employee::new).collect(Collectors.toSet()));
+    }
+
+    @Test
+    public void shouldArchiveDocument() {
+        //given
+        when(documentRepository.load(documentNumber)).thenReturn(document);
+        when(userManager.currentEmployee()).thenReturn(employee);
+
+        //when
+        documentFlowProcess.archive(documentNumber);
+
+        //then
+        verify(document).delete(employee);
+        verify(documentRepository).save(document);
+    }
+
 }

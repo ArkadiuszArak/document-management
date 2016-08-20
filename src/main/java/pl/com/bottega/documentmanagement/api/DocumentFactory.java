@@ -1,17 +1,18 @@
 package pl.com.bottega.documentmanagement.api;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import pl.com.bottega.documentmanagement.domain.Document;
-import pl.com.bottega.documentmanagement.domain.DocumentNumber;
 import pl.com.bottega.documentmanagement.domain.DocumentNumberGenerator;
-import pl.com.bottega.documentmanagement.domain.Employee;
+
 
 /**
- * Created by arkadiuszarak on 10/08/2016.
+ * Created by maciuch on 17.08.16.
  */
-@Service
+@Component
 public class DocumentFactory {
+
     private DocumentNumberGenerator documentNumberGenerator;
+
     private UserManager userManager;
 
     public DocumentFactory(DocumentNumberGenerator documentNumberGenerator, UserManager userManager) {
@@ -19,8 +20,8 @@ public class DocumentFactory {
         this.userManager = userManager;
     }
 
-    public Document createDocument(String content, String title){
-        Document document = new Document(documentNumberGenerator.generate(), content, title, userManager.currentEmployee());
-        return document;
+    public Document create(String title, String content) {
+        return new Document(documentNumberGenerator.generate(), title, content, userManager.currentEmployee());
     }
+
 }
