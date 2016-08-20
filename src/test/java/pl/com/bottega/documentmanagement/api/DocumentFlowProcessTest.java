@@ -46,6 +46,7 @@ public class DocumentFlowProcessTest {
     public void shouldCreateDocument() {
         DocumentFlowProcess documentFlowProcess = new DocumentFlowProcess(documentRepository, userManager, documentNumberGenerator, documentFactory);
         when(documentFactory.createDocument(anyContent, anyTitle)).thenReturn(document);
+        when(document.number()).thenReturn(documentNumber);
 
         DocumentNumber documentNr = documentFlowProcess.create(anyTitle, anyContent);
 
