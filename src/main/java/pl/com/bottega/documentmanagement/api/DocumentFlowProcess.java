@@ -12,7 +12,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by maciuch on 12.06.16.
  */
 @Service
-
 public class DocumentFlowProcess {
 
     private DocumentNumberGenerator documentNumberGenerator;
@@ -28,21 +27,22 @@ public class DocumentFlowProcess {
     }
 
     @Transactional
-    @RequiresAuth(roles = "EDITOR")
+ //   @RequiresAuth(roles = "EDITOR")
     public DocumentNumber create(String title, String content) {
         checkNotNull(title);
         checkNotNull(content);
 
-        //DocumentNumber documentNumber = documentNumberGenerator.generate();
+        //DocumentNumber documentNumber = .generate();
         //Document document = new Document(documentNumber, title, content, userManager.currentEmployee());
         Document document = documentFactory.createDocument(content, title);
         documentRepository.save(document);
 
         return document.number();
+        //return documentNumber;
     }
 
     @Transactional
-    @RequiresAuth(roles = "EDITOR")
+//    @RequiresAuth(roles = "EDITOR")
     public void change(DocumentNumber documentNumber, String newTitle, String newContent) {
         checkNotNull(documentNumber);
         checkNotNull(newTitle);
