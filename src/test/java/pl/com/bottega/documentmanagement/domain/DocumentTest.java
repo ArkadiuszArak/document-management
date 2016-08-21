@@ -39,12 +39,15 @@ public class DocumentTest {
     private String newContent = "new content";
     private static Long EPS = 2L * 1000L;
 
+    @Mock
+    private PrintingCostCalculator printingCostCalculator;
+
     @Test
     public void shouldCreateDocumentWithInitialState() {
         // given
 
         // when
-        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
+        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee, printingCostCalculator);
 
         // then
         assertEquals(anyNumber, document.number());
@@ -58,7 +61,7 @@ public class DocumentTest {
     @Test
     public void shouldVerifyDocument() {
         //given
-        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
+        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee, printingCostCalculator);
 
         //when
         document.verify(anyEmployee);
@@ -72,7 +75,7 @@ public class DocumentTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldRequireVerificator() {
         //given
-        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
+        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee, printingCostCalculator);
 
         // when
         document.verify(null);
@@ -82,7 +85,7 @@ public class DocumentTest {
     @Test
     public void shouldRequireVerificatorOtherWay() {
         //given
-        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
+        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee, printingCostCalculator);
 
         // when
         try {
@@ -96,7 +99,7 @@ public class DocumentTest {
     @Test
     public void shouldChangeDocument() {
         //given
-        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
+        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee, printingCostCalculator);
 
         //when
         document.change(newTitle, newContent);
@@ -110,7 +113,7 @@ public class DocumentTest {
     @Test
     public void shouldChangeStatusToDraftAfterUpdate() {
         //given
-        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
+        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee, printingCostCalculator);
         document.verify(anyEmployee);
 
         //when
@@ -123,7 +126,7 @@ public class DocumentTest {
     @Test
     public void shouldDeleteDocument() {
         //given
-        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
+        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee, printingCostCalculator);
 
         //when
         document.delete(anyEmployee);
@@ -136,7 +139,7 @@ public class DocumentTest {
     @Test
     public void shouldPublishDocument() {
         //given
-        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
+        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee, printingCostCalculator);
         document.verify(anyEmployee);
 
         //when
@@ -153,7 +156,7 @@ public class DocumentTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldNotAllowPublishingForNoEmployees() {
         //given
-        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
+        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee, printingCostCalculator);
 
         //when
         document.publish(anyEmployee, Sets.newHashSet());
@@ -162,7 +165,7 @@ public class DocumentTest {
     @Test(expected = IllegalStateException.class)
     public void shouldNotAllowPublishingUnverifiedDocument() {
         //given
-        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
+        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee, printingCostCalculator);
 
         //when
         Set<Employee> readers = Sets.newHashSet(anyEmployee, otherEmployee);
@@ -172,7 +175,7 @@ public class DocumentTest {
     @Test
     public void shouldConfirmDocument() {
         //given
-        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
+        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee, printingCostCalculator);
         document.verify(anyEmployee);
         Set<Employee> readers = Sets.newHashSet(otherEmployee);
         document.publish(anyEmployee, readers);
@@ -189,7 +192,7 @@ public class DocumentTest {
     @Test
     public void shouldConfirmDocumentForOtherEmployee() {
         //given
-        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
+        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee, printingCostCalculator);
         document.verify(anyEmployee);
         Set<Employee> readers = Sets.newHashSet(otherEmployee);
         document.publish(anyEmployee, readers);
@@ -207,7 +210,7 @@ public class DocumentTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldNotConfirmDocumentForNonReaderEmployee() {
         //given
-        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee);
+        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee, printingCostCalculator);
         document.verify(anyEmployee);
         Set<Employee> readers = Sets.newHashSet(anyEmployee);
         document.publish(anyEmployee, readers);

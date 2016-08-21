@@ -16,7 +16,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Service
 public class DocumentFlowProcess {
 
-    private DocumentFactory documentFactory;
     private DocumentRepository documentRepository;
     private EmployeeRepository employeeRepository;
     private UserManager userManager;
@@ -31,7 +30,7 @@ public class DocumentFlowProcess {
     }
 
     @Transactional
- //   @RequiresAuth(roles = "EDITOR")
+    @RequiresAuth(roles = "EDITOR")
     public DocumentNumber create(String title, String content) {
         checkNotNull(title);
         checkNotNull(content);
