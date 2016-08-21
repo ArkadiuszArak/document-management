@@ -1,27 +1,27 @@
 package pl.com.bottega.documentmanagement.infrastructure;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import pl.com.bottega.documentmanagement.api.EmployeeDetails;
-import pl.com.bottega.documentmanagement.api.MailingFaced;
+import pl.com.bottega.documentmanagement.api.MailingFacade;
 import pl.com.bottega.documentmanagement.domain.Document;
-import pl.com.bottega.documentmanagement.domain.Employee;
 
-import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Logger;
 
 /**
- * Created by arkadiuszarak on 21/08/2016.
+ * Created by maciuch on 21.08.16.
  */
 @Component
-public class MailingFacadeImpl implements MailingFaced {
+public class MailingFacadeImpl implements MailingFacade {
+
     @Override
-    public void sendDocumentPublisedEmails(Document document, Set<EmployeeDetails> employeeDetailsSet) {
-        employeeDetailsSet.stream().forEach((e) -> logMailing(document,e));
+    public void sendDocumentPublishedEmails(Document document, Set<EmployeeDetails> employeeDetailsSet) {
+        employeeDetailsSet.stream().forEach((e) -> logMailing(document, e));
     }
 
-    private void logMailing(Document document, EmployeeDetails employeeDetails){
-        String msg = String.format("Mailing info to %s about published documents %s", employeeDetails.getEmail(), document.content());
-        Logger.getLogger(String.valueOf(MailingFacadeImpl.class)).info(msg);
+    private void logMailing(Document document, EmployeeDetails employeeDetails) {
+        String msg = String.format("Mailing info to %s about published document %s", employeeDetails.getEmail(), document.title());
+        Logger.getLogger(MailingFacadeImpl.class).info(msg);
     }
+
 }

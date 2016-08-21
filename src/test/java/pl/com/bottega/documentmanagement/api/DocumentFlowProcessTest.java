@@ -54,7 +54,7 @@ public class DocumentFlowProcessTest {
     private Employee employee;
 
     @Mock
-    private MailingFaced mailingFaced;
+    private MailingFacade mailingFacade;
 
     @Mock
     private PrintSystemFacade printSystemFacade;
@@ -64,8 +64,8 @@ public class DocumentFlowProcessTest {
 
     @Before
     public void setUp() throws Exception {
-        documentFlowProcess = new DocumentFlowProcess(documentRepository, userManager, documentFactory, employeeRepository,
-                hrSystemFacade, printSystemFacade, mailingFaced);
+        documentFlowProcess = new DocumentFlowProcess(documentRepository, userManager,
+                documentFactory, employeeRepository, hrSystemFacade, printSystemFacade, mailingFacade);
     }
 
     @Test
@@ -125,12 +125,12 @@ public class DocumentFlowProcessTest {
     }
 
     @Test
-    public void shouldSendPrintRequestForEmployeesWithoutEmaill(){
+    public void shouldSendPrintRequestForEmployeesWithoutEmail() {
 
     }
 
     @Test
-    public void shouldSendPublicationEmailsToEmployeesWithEmail(){
+    public void shouldSendPublicationEmailsToEmployeesWithEmail() {
 
     }
 

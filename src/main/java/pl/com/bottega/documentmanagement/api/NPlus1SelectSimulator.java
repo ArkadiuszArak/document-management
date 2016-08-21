@@ -22,7 +22,7 @@ public class NPlus1SelectSimulator {
     private EntityManager entityManager;
 
     @Autowired
-    private PrintingCostCalculator printingCostCalculator;
+    private PrintCostCalculator printCostCalculator;
 
     @Transactional
     public void insertTestData() {
@@ -30,7 +30,7 @@ public class NPlus1SelectSimulator {
         entityManager.persist(employee);
         for(int i = 0; i < 1000; i++) {
             Document d = new Document(
-                new DocumentNumber(randomString()), randomString(), randomString(), employee, printingCostCalculator
+                new DocumentNumber(randomString()), randomString(), randomString(), employee, printCostCalculator
             );
             d.tag(Sets.newHashSet(new Tag("one"), new Tag("two"), new Tag("three")));
             entityManager.persist(d);

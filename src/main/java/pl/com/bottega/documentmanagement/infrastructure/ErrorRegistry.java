@@ -4,26 +4,29 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by arkadiuszarak on 20/08/2016.
+ * Created by maciuch on 20.08.16.
  */
 public class ErrorRegistry {
 
     private static ErrorRegistry singleton;
 
+    private ErrorRegistry() {
+
+    }
+
     private List<String> errors = new LinkedList<>();
 
-    private ErrorRegistry(){}
-
-    public synchronized static ErrorRegistry getInstance(){
+    public static ErrorRegistry getInstance() {
         if (singleton == null)
-            synchronized (ErrorRegistry.class){
-                if (singleton == null)
+            synchronized (ErrorRegistry.class) {
+                if(singleton == null)
                     singleton = new ErrorRegistry();
             }
         return singleton;
     }
 
-    public void registerError(String error){
+    public void registerError(String error) {
         errors.add(error);
     }
+
 }

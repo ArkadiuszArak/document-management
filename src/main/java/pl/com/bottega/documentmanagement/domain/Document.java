@@ -17,7 +17,7 @@ import static com.google.common.base.Preconditions.checkState;
 @Entity
 public class Document {
 
-    private static int CHARS_PER_PAGE = 1000;
+    private static final int CHARS_PER_PAGE = 1000;
 
     @Id
     @GeneratedValue
@@ -62,7 +62,9 @@ public class Document {
     private Document() {
     }
 
-    public Document(DocumentNumber documentNumber, String content, String title, Employee creator, PrintingCostCalculator printingCostCalculator) {
+    public Document(DocumentNumber documentNumber, String content, String title, Employee creator,
+                    PrintCostCalculator printCostCalculator
+    ) {
         this.documentNumber = documentNumber;
         this.content = content;
         this.title = title;
@@ -70,11 +72,13 @@ public class Document {
         this.status = DocumentStatus.DRAFT;
         this.createdAt = new Date();
         this.deleted = false;
-        this.printingCost = printingCostCalculator.cost(pagesCount());
+        this.printingCost = printCostCalculator.cost(pagesCount());
     }
 
-    private int pagesCount(){
-        return content.length() / CHARS_PER_PAGE + (content.length() % CHARS_PER_PAGE == 0 ? 0 : 1);
+    private int pagesCount() {
+        return content.length() / CHARS_PER_PAGE +
+                (content.length() % CHARS_PER_PAGE == 0 ? 0 : 1);
+        //return Math.ceil((double) content.length()) / CHARS_PER_PAGE);
     }
 
     public void change(String title, String content) {
@@ -165,7 +169,7 @@ public class Document {
     }
 
     private void setReaders(Set<Reader> newReaders) {
-        if(readers == null)
+        if (readers == null)
             readers = new HashSet<>();
         else
             readers.clear();
@@ -181,7 +185,7 @@ public class Document {
     }
 
     public Date publishedAt() {
-       return publishedAt;
+        return publishedAt;
     }
 
     public Reader reader(Employee employee) {

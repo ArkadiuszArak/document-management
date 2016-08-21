@@ -18,6 +18,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Service
 public class DocumentFlowProcess {
 
+    private HRSystemFacade hrSystemFacade;
+    private final PrintSystemFacade printSystemFacade;
+    private final MailingFacade mailingFacade;
+    private DocumentFactory documentFactory;
     private DocumentRepository documentRepository;
     private EmployeeRepository employeeRepository;
     private UserManager userManager;
@@ -28,15 +32,16 @@ public class DocumentFlowProcess {
 
     public DocumentFlowProcess(DocumentRepository documentRepository, UserManager userManager,
                                DocumentFactory documentFactory, EmployeeRepository employeeRepository,
-                               HRSystemFacade hrSystemFacade, PrintSystemFacade printSystemFacade, MailingFaced mailingFaced) {
+                               HRSystemFacade hrSystemFacade, PrintSystemFacade printSystemFacade,
+                               MailingFacade mailingFacade
+    ) {
         this.documentRepository = documentRepository;
         this.userManager = userManager;
         this.documentFactory = documentFactory;
         this.employeeRepository = employeeRepository;
         this.hrSystemFacade = hrSystemFacade;
         this.printSystemFacade = printSystemFacade;
-        this.mailingFaced = mailingFaced;
-
+        this.mailingFacade = mailingFacade;
     }
 
     @Transactional
@@ -79,18 +84,20 @@ public class DocumentFlowProcess {
         Document document = documentRepository.load(documentNumber);
         document.publish(userManager.currentEmployee(), getEmployees(ids));
         Set<EmployeeDetails> employeeDetailsSet = hrSystemFacade.getEmployeeDetails(Sets.newHashSet(ids));
-        sendEmailsAboutPublisherDocument(document, employeeDetailsSet);
+        sendEmailsAboutPublishedDocument(document, employeeDetailsSet);
         printDocument(document, employeeDetailsSet);
     }
 
-    private void sendEmailsAboutPublisherDocument(Document document, Set<EmployeeDetails> employeeDetailsSet) {
-        Set<EmployeeDetails> employeeWithEmail = employeeDetailsSet.stream().filter(EmployeeDetails::hasEmail).collect(Collectors.toSet());
-        mailingFaced.sendDocumentPublisedEmails(document, employeeWithEmail);
+    private void sendEmailsAboutPublishedDocument(Document document, Set<EmployeeDetails> employeeDetailsSet) {
+        Set<EmployeeDetails> employeesWithEmail = employeeDetailsSet.stream().
+                filter(EmployeeDetails::hasEmail).collect(Collectors.toSet());
+        mailingFacade.sendDocumentPublishedEmails(document, employeesWithEmail);
     }
 
     private void printDocument(Document document, Set<EmployeeDetails> employeeDetailsSet) {
-        Set<EmployeeDetails> employeeWithoutEmail = employeeDetailsSet.stream().filter(employeeDetails -> !employeeDetails.hasEmail()).collect(Collectors.toSet());
-        printSystemFacade.printDocuments(document, employeeWithoutEmail);
+        Set<EmployeeDetails> employeesWithoutEmail = employeeDetailsSet.stream().
+                filter(employeeDetails -> !employeeDetails.hasEmail()).collect(Collectors.toSet());
+        printSystemFacade.printDocument(document, employeesWithoutEmail);
     }
 
     private Set<Employee> getEmployees(Iterable<EmployeeId> ids) {

@@ -37,7 +37,7 @@
     <bean id="documentNumberGenerator" class="${documentNumberGeneratorClass}">
     </bean>
 
-    <bean id="printCostCalculator" class="${printingCostCalculatorCost}"></bean>
+    <bean id="printCostCalculator" class="${printCostCalculatorCost}"></bean>
 
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>

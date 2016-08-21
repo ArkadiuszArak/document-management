@@ -7,11 +7,11 @@ import java.math.BigDecimal;
 /**
  * Created by maciuch on 20.08.16.
  */
-public class ColorPrintCostCalculator implements PrintCostCalculator {
+public class GrayPrintCostCalculator implements PrintCostCalculator {
 
     @Override
     public BigDecimal cost(int pagesCount) {
-        return new BigDecimal(pagesCount * 0.1);
+        return new BigDecimal(pagesCount * 0.05);
     }
 
 }

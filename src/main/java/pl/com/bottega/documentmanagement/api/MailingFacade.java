@@ -7,8 +7,8 @@ import java.util.Set;
 /**
  * Created by maciuch on 21.08.16.
  */
-public interface PrintSystemFacade {
+public interface MailingFacade {
 
-    void printDocument(Document document, Set<EmployeeDetails> employeeDetailsSet);
+    void sendDocumentPublishedEmails(Document document, Set<EmployeeDetails> employeeDetailsSet);
 
 }

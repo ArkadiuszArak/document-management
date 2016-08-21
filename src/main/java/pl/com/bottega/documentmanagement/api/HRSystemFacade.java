@@ -1,13 +1,14 @@
 package pl.com.bottega.documentmanagement.api;
 
-import pl.com.bottega.documentmanagement.domain.Employee;
 import pl.com.bottega.documentmanagement.domain.EmployeeId;
 
 import java.util.Set;
 
 /**
- * Created by arkadiuszarak on 21/08/2016.
+ * Created by maciuch on 21.08.16.
  */
 public interface HRSystemFacade {
-    Set<EmployeeDetails> getEmployeeDetails(Set<EmployeeId> employees);
+
+    Set<EmployeeDetails> getEmployeeDetails(Set<EmployeeId> employee);
+
 }
