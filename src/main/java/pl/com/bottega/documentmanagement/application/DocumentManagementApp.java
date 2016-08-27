@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Scanner;
 
 /**
- * Created by arkadiuszarak on 21/08/2016.
+ * Created by maciuch on 21.08.16.
  */
 public class DocumentManagementApp extends ConsoleApplication {
 
@@ -27,29 +27,31 @@ public class DocumentManagementApp extends ConsoleApplication {
         System.out.print("Password: ");
         String password = new Scanner(System.in).nextLine();
         UserManager userManager = applicationContext.getBean(UserManager.class);
-        SignupResultDto signeupResultDto = userManager.login(login, password);
-        if (!signeupResultDto.isSuccess())
-            System.out.println(signeupResultDto.getFailureReason());
+        SignupResultDto signupResultDto = userManager.login(login, password);
+        if(!signupResultDto.isSuccess()) {
+            System.out.println(signupResultDto.getFailureReason());
             promptLogin();
+        }
     }
 
     @Override
     protected CommandFactory commandFactory() {
-        return new DociumentManagementCommandFactory(applicationContext);
+        return new DocumentManagementCommandFactory(applicationContext);
     }
 
     @Override
     protected Collection<String> menuItems() {
-
         return Lists.newArrayList(
                 "1. Create document",
                 "2. Search documents",
-                "3. Edit Document",
+                "3. Edit document",
                 "4. Verify document"
-                );
+        );
+
     }
 
     public static void main(String[] args) {
         new DocumentManagementApp().run();
     }
+
 }

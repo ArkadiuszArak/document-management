@@ -1,11 +1,11 @@
 package pl.com.bottega.documentmanagement.application;
 
 /**
- * Created by arkadiuszarak on 21/08/2016.
+ * Created by maciuch on 21.08.16.
  */
 public class SearchDocumentCommand extends SpringCommand {
     @Override
     public void execute() {
-        System.out.println("Search document");
+        System.out.println("Executing search document");
     }
 }

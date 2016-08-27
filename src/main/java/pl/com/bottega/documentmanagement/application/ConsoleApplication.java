@@ -4,25 +4,25 @@ import java.util.Collection;
 import java.util.Scanner;
 
 /**
- * Created by arkadiuszarak on 21/08/2016.
+ * Created by maciuch on 21.08.16.
  */
 public abstract class ConsoleApplication {
 
     protected Scanner scanner = new Scanner(System.in);
 
-    public void run(){
-        while (true){
+    public void run() {
+        while(true) {
             printMenu();
             String cmd = getCommand();
-            if (cmd.equals("quite"))
+            if(cmd.equals("quit"))
                 return;
             execute(cmd);
         }
     }
 
-    private void printMenu(){
+    private void printMenu() {
         Collection<String> menuItems = menuItems();
-        for (String item : menuItems)
+        for(String item : menuItems)
             System.out.println(item);
     }
 
@@ -30,9 +30,9 @@ public abstract class ConsoleApplication {
         return scanner.nextLine();
     }
 
-    protected void execute(String cmd){
-        CommandFactory commandFactory = commandFactory();
-        Command command = commandFactory.createCommand(cmd);
+    private void execute(String cmd) {
+        CommandFactory commandFacotry = commandFactory();
+        Command command = commandFacotry.createCommand(cmd);
         command.execute();
     }
 

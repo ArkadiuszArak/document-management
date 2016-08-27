@@ -3,16 +3,18 @@ package pl.com.bottega.documentmanagement.application;
 import org.springframework.context.ApplicationContext;
 
 /**
- * Created by arkadiuszarak on 21/08/2016.
+ * Created by maciuch on 21.08.16.
  */
 public abstract class SpringCommand implements Command {
+
     private ApplicationContext applicationContext;
 
-    public void setApplicationContext(ApplicationContext applicationContext){
+    public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
 
-    public <T> T getBean(Class<T> beanClass){
+    public <T> T getBean(Class<T> beanClass) {
         return applicationContext.getBean(beanClass);
     }
+
 }

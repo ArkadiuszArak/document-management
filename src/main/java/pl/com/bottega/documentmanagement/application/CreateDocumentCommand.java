@@ -6,22 +6,20 @@ import pl.com.bottega.documentmanagement.domain.DocumentNumber;
 import java.util.Scanner;
 
 /**
- * Created by arkadiuszarak on 21/08/2016.
+ * Created by maciuch on 21.08.16.
  */
 public class CreateDocumentCommand extends SpringCommand {
 
     @Override
     public void execute() {
-        System.out.println("Execute create document");
-        System.out.println("Title: ");
+        System.out.print("Title: ");
         String title = new Scanner(System.in).nextLine();
-        System.out.println("Content: ");
+        System.out.print("Content: ");
         String content = new Scanner(System.in).nextLine();
-
         System.out.println("Creating document " + title);
         DocumentFlowProcess documentFlowProcess = getBean(DocumentFlowProcess.class);
-        DocumentNumber documentNumber = documentFlowProcess.create(title, content);
-        System.out.println("Crated document: " + documentNumber.getNumber());
-
+        DocumentNumber nr = documentFlowProcess.create(title, content);
+        System.out.println("Created document: " + nr.getNumber());
     }
+
 }
