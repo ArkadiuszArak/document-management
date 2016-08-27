@@ -4,7 +4,7 @@ import com.google.common.base.Objects;
 import pl.com.bottega.documentmanagement.domain.DocumentStatus;
 
 import java.util.Date;
-import java.util.Objects;
+
 
 /**
  * Created by maciuch on 12.06.16.
@@ -88,19 +88,19 @@ public class DocumentDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DocumentDto that = (DocumentDto) o;
-        return Objects.equal(number, that.number) &&
-                Objects.equal(title, that.title) &&
-                Objects.equal(content, that.content) &&
-                Objects.equal(status, that.status) &&
-                Objects.equal(creatorId, that.creatorId) &&
-                Objects.equal(verificatorId, that.verificatorId) &&
-                Objects.equal(createdAt, that.createdAt) &&
-                Objects.equal(verificatedAt, that.verificatedAt) &&
-                Objects.equal(updatedAt, that.updatedAt);
+        return java.util.Objects.equals(getNumber(), that.getNumber()) &&
+                java.util.Objects.equals(getTitle(), that.getTitle()) &&
+                java.util.Objects.equals(getContent(), that.getContent()) &&
+                java.util.Objects.equals(getStatus(), that.getStatus()) &&
+                java.util.Objects.equals(getCreatorId(), that.getCreatorId()) &&
+                java.util.Objects.equals(getVerificatorId(), that.getVerificatorId()) &&
+                java.util.Objects.equals(getCreatedAt(), that.getCreatedAt()) &&
+                java.util.Objects.equals(getVerificatedAt(), that.getVerificatedAt()) &&
+                java.util.Objects.equals(getUpdatedAt(), that.getUpdatedAt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(number, title, content, status, creatorId, verificatorId, createdAt, verificatedAt, updatedAt);
+        return java.util.Objects.hash(getNumber(), getTitle(), getContent(), getStatus(), getCreatorId(), getVerificatorId(), getCreatedAt(), getVerificatedAt(), getUpdatedAt());
     }
 }

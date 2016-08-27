@@ -1,3 +1,4 @@
+/*
 package pl.com.bottega.documentmanagement.api;
 
 import com.google.common.collect.Sets;
@@ -12,9 +13,11 @@ import javax.persistence.Query;
 import java.util.List;
 import java.util.UUID;
 
+*/
 /**
  * Created by arkadiuszarak on 30/07/2016.
- */
+ *//*
+
 @Service
 public class NPlusJedenSelectSymulator {
 
@@ -29,7 +32,7 @@ public class NPlusJedenSelectSymulator {
         Employee employee = new Employee(randomString(), randomString(), new EmployeeId(893L));
         entityManager.persist(employee);
         for (int i = 0 ; i < 1000 ; i++){
-            Document d = new Document(new DocumentNumber(randomString()), randomString(), randomString(), employee, printingCostCalculator);
+            Document d = new Document(new DocumentNumber(randomString()), randomString(), randomString(), employee, (PrintCostCalculator) printingCostCalculator);
             d.tag(Sets.newHashSet(new Tag("one"), new Tag("two"), new Tag("four")));
             entityManager.persist(d);
         }
@@ -60,3 +63,4 @@ public class NPlusJedenSelectSymulator {
         return UUID.randomUUID().toString();
     }
 }
+*/

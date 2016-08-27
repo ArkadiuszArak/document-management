@@ -1,3 +1,4 @@
+/*
 package pl.com.bottega.documentmanagement.application;
 
 import org.springframework.context.ApplicationContext;
@@ -6,9 +7,11 @@ import pl.com.bottega.documentmanagement.api.NPlusJedenSelectSymulator;
 import pl.com.bottega.documentmanagement.domain.Document;
 import pl.com.bottega.documentmanagement.domain.Tag;
 
+*/
 /**
  * Created by arkadiuszarak on 30/07/2016.
- */
+ *//*
+
 public class NPlusJedenTest {
     public static void main(String[] args) {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[]{"application.xml"});
@@ -21,3 +24,4 @@ public class NPlusJedenTest {
         }
     }
 }
+*/

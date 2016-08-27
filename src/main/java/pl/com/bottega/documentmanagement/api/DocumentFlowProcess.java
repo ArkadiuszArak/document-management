@@ -18,17 +18,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Service
 public class DocumentFlowProcess {
 
-    private HRSystemFacade hrSystemFacade;
-    private final PrintSystemFacade printSystemFacade;
     private final MailingFacade mailingFacade;
-    private DocumentFactory documentFactory;
+
     private DocumentRepository documentRepository;
     private EmployeeRepository employeeRepository;
     private UserManager userManager;
     private DocumentFactory documentFactory;
     private HRSystemFacade hrSystemFacade;
     private PrintSystemFacade printSystemFacade;
-    private MailingFaced mailingFaced;
+
 
     public DocumentFlowProcess(DocumentRepository documentRepository, UserManager userManager,
                                DocumentFactory documentFactory, EmployeeRepository employeeRepository,
