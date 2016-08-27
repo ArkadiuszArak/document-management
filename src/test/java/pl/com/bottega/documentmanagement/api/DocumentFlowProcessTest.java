@@ -125,6 +125,11 @@ public class DocumentFlowProcessTest {
     }
 
     @Test
+    public void shouldNotifyAboutPublishing(){
+        //document.publish();
+    }
+
+    @Test
     public void shouldSendPrintRequestForEmployeesWithoutEmail() {
 
     }
