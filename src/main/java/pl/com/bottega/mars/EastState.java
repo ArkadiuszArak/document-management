@@ -1,7 +1,9 @@
 package pl.com.bottega.mars;
 
+import javafx.geometry.Pos;
+
 /**
- * Created by arkadiuszarak on 28/08/2016.
+ * Created by maciuch on 28.08.16.
  */
 public class EastState extends MarsRoverState {
     public EastState(MarsRover marsRover) {
@@ -10,22 +12,22 @@ public class EastState extends MarsRoverState {
 
     @Override
     public void move() {
-        Postition postition = marsRover.position();
-        marsRover.setPosition(new Postition(postition.x() - 1 , postition.y()));
+        Position position = marsRover.position();
+        marsRover.setPosition(new Position(position.x() - 1, position.y()));
     }
 
     @Override
     public void rotateRight() {
-        marsRover.setState(new NorthWestState(marsRover));
-    }
-
-    @Override
-    public void rotateLeft() {
         marsRover.setState(new NorthEastState(marsRover));
     }
 
     @Override
+    public void rotateLeft() {
+        marsRover.setState(new SouthEastState(marsRover));
+    }
+
+    @Override
     public String direction() {
-        return null;
+        return "EAST";
     }
 }

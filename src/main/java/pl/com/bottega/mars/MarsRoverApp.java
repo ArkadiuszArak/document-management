@@ -3,27 +3,27 @@ package pl.com.bottega.mars;
 import java.util.Scanner;
 
 /**
- * Created by arkadiuszarak on 28/08/2016.
+ * Created by maciuch on 28.08.16.
  */
 public class MarsRoverApp {
+
     public static void main(String[] args) {
         MarsRover marsRover = new MarsRover();
-
-        while (true){
-            System.out.print("Enter command: (m, rl, rr)");
-
-            String command = new Scanner(System.in).nextLine();
-
-            if (command.equals("m")){
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.print("Enter command: (m, rl, rr): ");
+            String cmd = scanner.next();
+            if (cmd.equals("m"))
                 marsRover.move();
-                System.out.println(marsRover.position().toString());
-            } else if(command.equals("rl")){
+            else if (cmd.equals("rl"))
                 marsRover.rotateLeft();
-                System.out.println(marsRover.position().toString());
-            } else if (command.equals("rr")){
+            else if (cmd.equals("rr"))
                 marsRover.rotateRight();
-                System.out.println(marsRover.position().toString());
-            }
+            else
+                System.out.println("Sorry I don't understand ;(");
+            String msg = String.format("My position is: %s, %s", marsRover.position(), marsRover.getDirection());
+            System.out.println(msg);
         }
     }
+
 }

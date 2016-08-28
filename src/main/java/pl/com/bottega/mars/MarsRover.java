@@ -1,15 +1,15 @@
 package pl.com.bottega.mars;
 
 /**
- * Created by arkadiuszarak on 28/08/2016.
+ * Created by Dell on 2016-08-28.
  */
 public class MarsRover {
 
-    private Postition position;
+    private Position position;
     private MarsRoverState currentState;
 
     public MarsRover() {
-        this.position = new Postition(0, 0);
+        this.position = new Position(0, 0);
         this.currentState = new NorthState(this);
     }
 
@@ -25,20 +25,19 @@ public class MarsRover {
         currentState.rotateLeft();
     }
 
-    public Postition position() {
+    public Position position() {
         return position;
     }
 
-    public void setPosition(Postition position){
+    public String getDirection() {
+        return currentState.direction();
+    }
+
+    public void setPosition(Position position) {
         this.position = position;
     }
 
-    public void setState(MarsRoverState state){
+    public void setState(MarsRoverState state) {
         this.currentState = state;
     }
-
-    public void getDirection(){
-        currentState.direction();
-    }
-
 }

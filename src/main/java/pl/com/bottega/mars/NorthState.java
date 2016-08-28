@@ -1,34 +1,32 @@
 package pl.com.bottega.mars;
 
 /**
- * Created by arkadiuszarak on 28/08/2016.
+ * Created by maciuch on 28.08.16.
  */
 public class NorthState extends MarsRoverState {
 
-
-
-    public NorthState(MarsRover marsRover) { //musi miec konstrukto
+    public NorthState(MarsRover marsRover) {
         super(marsRover);
     }
 
     @Override
     public void move() {
-        Postition postition = marsRover.position();
-        marsRover.setPosition(new Postition(postition.x(), postition.y() + 1));
+        Position position = marsRover.position();
+        marsRover.setPosition(new Position(position.x(), position.y() + 1));
     }
 
     @Override
     public void rotateRight() {
-        marsRover.setState(new NorthWestState(marsRover));
-    }
-
-    @Override
-    public void rotateLeft() {
         marsRover.setState(new NorthEastState(marsRover));
     }
 
     @Override
+    public void rotateLeft() {
+        marsRover.setState(new NorthWestState(marsRover));
+    }
+
+    @Override
     public String direction() {
-        return null;
+        return "NORTH";
     }
 }
