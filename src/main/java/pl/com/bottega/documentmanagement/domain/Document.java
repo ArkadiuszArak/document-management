@@ -1,5 +1,7 @@
 package pl.com.bottega.documentmanagement.domain;
 
+import pl.com.bottega.documentmanagement.domain.events.DocumentListener;
+
 import javax.persistence.*;
 
 import java.math.BigDecimal;
@@ -168,6 +170,13 @@ public class Document {
         this.publishedAt = new Date();
         this.publisher = publisher;
         this.status = DocumentStatus.PUBLISHED;
+        notifyDocumentPublished();
+    }
+
+    private void notifyDocumentPublished() {
+        for (DocumentListener listener : documentListeners)
+            listener.published(this);
+        //eventPublisher.publish(new DocumentPublishedEvent(number))
     }
 
     private void notifyDocumentPublished(){
@@ -201,7 +210,8 @@ public class Document {
                 findFirst().orElseThrow(() -> new IllegalArgumentException());
     }
 
-    public void subscribeDocumentListener(DocumentListener documentListener){
+    public void subscribeDocumentListener(DocumentListener documentListener) {
         documentListeners.add(documentListener);
     }
+
 }

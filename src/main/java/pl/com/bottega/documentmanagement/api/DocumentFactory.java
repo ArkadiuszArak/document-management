@@ -24,7 +24,8 @@ public class DocumentFactory {
     private DocumentListenerManager documentListenerManager;
 
     public DocumentFactory(DocumentNumberGenerator documentNumberGenerator,
-                           UserManager userManager, PrintCostCalculator printCostCalculator, DocumentListenerManager documentListenerManager) {
+                           UserManager userManager, PrintCostCalculator printCostCalculator,
+                           DocumentListenerManager documentListenerManager) {
         this.documentNumberGenerator = documentNumberGenerator;
         this.userManager = userManager;
         this.printCostCalculator = printCostCalculator;
@@ -34,8 +35,9 @@ public class DocumentFactory {
     public Document create(String title, String content) {
         Document document = new Document(documentNumberGenerator.generate(), content, title,
                 userManager.currentEmployee(), printCostCalculator);
-        documentListenerManager.subscribeListener(document);
+        documentListenerManager.subscribeListeners(document);
         return document;
+    }
 
     }
 }

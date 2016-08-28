@@ -2,7 +2,6 @@ package pl.com.bottega.documentmanagement.infrastructure;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import pl.com.bottega.documentmanagement.api.DocumentFactory;
 import pl.com.bottega.documentmanagement.api.DocumentListenerManager;
 import pl.com.bottega.documentmanagement.domain.Document;
 import pl.com.bottega.documentmanagement.domain.DocumentNumber;
@@ -30,10 +29,10 @@ public class JPADocumentRepository implements DocumentRepository {
 
     @Override
     public Document load(DocumentNumber documentNumber) {
-        Document document =  entityManager.createQuery("FROM Document d " +
+        Document document = entityManager.createQuery("FROM Document d " +
                         "WHERE d.documentNumber = :num",
                 Document.class).setParameter("num", documentNumber).getSingleResult();
-        documentListenerManager.subscribeListener(document);
+        documentListenerManager.subscribeListeners(document);
         return document;
     }
 

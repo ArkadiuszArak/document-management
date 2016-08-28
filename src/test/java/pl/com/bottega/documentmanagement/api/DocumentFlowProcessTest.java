@@ -55,7 +55,8 @@ public class DocumentFlowProcessTest {
 
     @Before
     public void setUp() throws Exception {
-        documentFlowProcess = new DocumentFlowProcess(documentRepository, userManager, documentFactory, employeeRepository);
+        documentFlowProcess = new DocumentFlowProcess(documentRepository, userManager,
+                documentFactory, employeeRepository);
     }
 
     @Test

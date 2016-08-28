@@ -3,9 +3,10 @@ package pl.com.bottega.documentmanagement.domain.events;
 import pl.com.bottega.documentmanagement.domain.Document;
 
 /**
- * Created by arkadiuszarak on 27/08/2016.
+ * Created by maciuch on 27.08.16.
  */
 public interface DocumentListener {
+
     void published(Document document);
 
 }

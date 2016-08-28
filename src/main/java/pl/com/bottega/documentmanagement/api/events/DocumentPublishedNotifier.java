@@ -3,7 +3,7 @@ package pl.com.bottega.documentmanagement.api.events;
 import com.google.common.collect.Sets;
 import pl.com.bottega.documentmanagement.api.EmployeeDetails;
 import pl.com.bottega.documentmanagement.api.HRSystemFacade;
-import pl.com.bottega.documentmanagement.api.PrintSystemFacade;
+import pl.com.bottega.documentmanagement.api.MailingFacade;
 import pl.com.bottega.documentmanagement.domain.Document;
 import pl.com.bottega.documentmanagement.domain.EmployeeId;
 import pl.com.bottega.documentmanagement.domain.Reader;
@@ -16,13 +16,13 @@ import java.util.stream.Collectors;
 /**
  * Created by maciuch on 27.08.16.
  */
-public class DocumentPrinter implements DocumentListener {
+public class DocumentPublishedNotifier implements DocumentListener {
 
-    private PrintSystemFacade printSystemFacade;
+    private MailingFacade mailingFacade;
     private HRSystemFacade hrSystemFacade;
 
-    public DocumentPrinter(PrintSystemFacade printSystemFacade, HRSystemFacade hrSystemFacade) {
-        this.printSystemFacade = printSystemFacade;
+    public DocumentPublishedNotifier(MailingFacade mailingFacade, HRSystemFacade hrSystemFacade) {
+        this.mailingFacade = mailingFacade;
         this.hrSystemFacade = hrSystemFacade;
     }
 
@@ -34,13 +34,13 @@ public class DocumentPrinter implements DocumentListener {
         for(Reader reader : readers)
             employeeIds.add(reader.employeeId());
         Set<EmployeeDetails> employeeDetailsSet = hrSystemFacade.getEmployeeDetails(Sets.newHashSet(employeeIds));
-        printDocument(document, employeeDetailsSet);
+        sendEmailsAboutPublishedDocument(document, employeeDetailsSet);
     }
 
-    private void printDocument(Document document, Set<EmployeeDetails> employeeDetailsSet) {
-        Set<EmployeeDetails> employeesWithoutEmail = employeeDetailsSet.stream().
-                filter(employeeDetails -> !employeeDetails.hasEmail()).collect(Collectors.toSet());
-        printSystemFacade.printDocument(document, employeesWithoutEmail);
+    private void sendEmailsAboutPublishedDocument(Document document, Set<EmployeeDetails> employeeDetailsSet) {
+        Set<EmployeeDetails> employeesWithEmail = employeeDetailsSet.stream().
+                filter(EmployeeDetails::hasEmail).collect(Collectors.toSet());
+        mailingFacade.sendDocumentPublishedEmails(document, employeesWithEmail);
     }
 
 }

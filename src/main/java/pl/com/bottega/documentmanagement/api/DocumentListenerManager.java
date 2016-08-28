@@ -7,20 +7,20 @@ import pl.com.bottega.documentmanagement.domain.events.DocumentListener;
 import java.util.Collection;
 
 /**
- * Created by arkadiuszarak on 27/08/2016.
+ * Created by maciuch on 27.08.16.
  */
 public class DocumentListenerManager {
 
     private Collection<DocumentListener> listeners;
 
     public DocumentListenerManager(Collection<DocumentListener> listeners) {
-
         this.listeners = listeners;
     }
 
-    public void subscribeListener(Document document){
-        for (DocumentListener d: listeners)
-            document.subscribeDocumentListener(d);
-        //listeners.forEach(document :: subscribeDocumentListener);
+    public void subscribeListeners(Document document) {
+        for(DocumentListener dl : listeners)
+            document.subscribeDocumentListener(dl);
+        //listeners.forEach(document::subscribeDocumentListener);
     }
+
 }

@@ -159,19 +159,22 @@ public class DocumentTest {
     }
 
     @Test
-    public void shouldNotifyAboutPublishing(){
+    public void shouldNotifyAboutPublishing() {
+        //given
         Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee, printCostCalculator);
         document.verify(anyEmployee);
-
         DocumentListener firstListener = mock(DocumentListener.class);
         DocumentListener secondListener = mock(DocumentListener.class);
         document.subscribeDocumentListener(firstListener);
         document.subscribeDocumentListener(secondListener);
 
-        document.publish(anyEmployee,Sets.newHashSet(anyEmployee));
+        //when
+        document.publish(anyEmployee, Sets.newHashSet(anyEmployee));
 
+        //then
         verify(firstListener).published(document);
         verify(secondListener).published(document);
+
     }
 
     @Test(expected = IllegalArgumentException.class)

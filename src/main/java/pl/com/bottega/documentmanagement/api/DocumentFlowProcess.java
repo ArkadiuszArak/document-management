@@ -18,6 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Service
 public class DocumentFlowProcess {
 
+    private DocumentFactory documentFactory;
     private DocumentRepository documentRepository;
     private EmployeeRepository employeeRepository;
     private UserManager userManager;
@@ -75,7 +76,6 @@ public class DocumentFlowProcess {
         Document document = documentRepository.load(documentNumber);
         document.publish(userManager.currentEmployee(), getEmployees(ids));
     }
-
 
     private Set<Employee> getEmployees(Iterable<EmployeeId> ids) {
         Set<Employee> employees = employeeRepository.findByEmployeeIds(ids);
