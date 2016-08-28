@@ -112,6 +112,15 @@ public class Document {
         this.deleted = true;
     }
 
+    public void export(DocumentBuilder builder){ //zamiana dokumentu na inna forma, te same kroki ktore sa definiowane w implementacjach
+        builder.start();
+        builder.addTitle(title);
+        builder.addContent(content);
+        builder.addCreatedAt(createdAt);
+        builder.addStatus(status.name());
+        builder.end();
+    }
+
     public void tag(Set<Tag> tags) {
         this.tags = tags;
     }
