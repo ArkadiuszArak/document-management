@@ -1,7 +1,7 @@
 package pl.com.bottega.mars;
 
 /**
- * Created by maciuch on 28.08.16.
+ * Created by arkadiuszarak on 28/08/2016.
  */
 public class Position {
 
