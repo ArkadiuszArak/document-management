@@ -18,7 +18,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Service
 public class DocumentFlowProcess {
 
-    private DocumentFactory documentFactory;
     private DocumentRepository documentRepository;
     private EmployeeRepository employeeRepository;
     private UserManager userManager;

@@ -6,6 +6,7 @@ import pl.com.bottega.documentmanagement.api.HRSystemFacade;
 import pl.com.bottega.documentmanagement.api.MailingFacade;
 import pl.com.bottega.documentmanagement.domain.Document;
 import pl.com.bottega.documentmanagement.domain.Employee;
+import pl.com.bottega.documentmanagement.domain.EmployeeId;
 import pl.com.bottega.documentmanagement.domain.Reader;
 import pl.com.bottega.documentmanagement.domain.events.DocumentListener;
 
@@ -29,11 +30,11 @@ public class DocumentPublisedNotifier implements DocumentListener {
     @Override
     public void published(Document document) {
         Set<Reader> readers = document.readers();
-        Set<Employee> employeesIds = new HashSet<>();
-        for (Reader reader : readers){
-            employeesIds.add(reader.employeeID());
-        }
-        Set<EmployeeDetails> employeeDetailsSet = hrSystemFacade.getEmployeeDetails(Sets.newHashSet(employeesIds));
+        //Set<EmployeeId> employeeIds = readers.stream().map(reader -> reader.employeeId()).collect(Collectors.toSet());
+        Set<EmployeeId> employeeIds = new HashSet<>();
+        for(Reader reader : readers)
+            employeeIds.add(reader.employeeId());
+        Set<EmployeeDetails> employeeDetailsSet = hrSystemFacade.getEmployeeDetails(Sets.newHashSet(employeeIds));
 
         sendEmailsAboutPublishedDocument(document, employeeDetailsSet);
     }

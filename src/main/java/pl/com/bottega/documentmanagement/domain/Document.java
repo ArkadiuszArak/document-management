@@ -7,8 +7,6 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
-import pl.com.bottega.documentmanagement.domain.events.DocumentListener;
-
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
@@ -177,11 +175,6 @@ public class Document {
         for (DocumentListener listener : documentListeners)
             listener.published(this);
         //eventPublisher.publish(new DocumentPublishedEvent(number))
-    }
-
-    private void notifyDocumentPublished(){
-        for (DocumentListener listener : documentListeners)
-            listener.published(this);
     }
 
     private void setReaders(Set<Reader> newReaders) {
