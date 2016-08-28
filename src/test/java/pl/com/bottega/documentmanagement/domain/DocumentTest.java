@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import pl.com.bottega.documentmanagement.domain.events.DocumentListener;
 
 import java.util.Date;
 import java.util.Set;
@@ -13,6 +14,7 @@ import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static pl.com.bottega.documentmanagement.utils.Assert.assertDatesEqual;
 
 /**
@@ -154,6 +156,22 @@ public class DocumentTest {
         document.readers().stream().forEach((reader) -> assertFalse(reader.confirmed()));
         assertEquals(anyEmployee, document.publisher());
         assertDatesEqual(new Date(), document.publishedAt());
+    }
+
+    @Test
+    public void shouldNotifyAboutPublishing(){
+        Document document = new Document(anyNumber, anyContent, anyTitle, anyEmployee, printCostCalculator);
+        document.verify(anyEmployee);
+
+        DocumentListener firstListener = mock(DocumentListener.class);
+        DocumentListener secondListener = mock(DocumentListener.class);
+        document.subscribeDocumentListener(firstListener);
+        document.subscribeDocumentListener(secondListener);
+
+        document.publish(anyEmployee,Sets.newHashSet(anyEmployee));
+
+        verify(firstListener).published(document);
+        verify(secondListener).published(document);
     }
 
     @Test(expected = IllegalArgumentException.class)

@@ -4,6 +4,9 @@ import org.springframework.stereotype.Component;
 import pl.com.bottega.documentmanagement.domain.Document;
 import pl.com.bottega.documentmanagement.domain.DocumentNumberGenerator;
 import pl.com.bottega.documentmanagement.domain.PrintCostCalculator;
+import pl.com.bottega.documentmanagement.domain.events.DocumentListener;
+
+import java.util.Collection;
 
 
 /**
@@ -18,16 +21,23 @@ public class DocumentFactory {
 
     private UserManager userManager;
 
+    private DocumentListenerManager documentListenerManager;
+
     public DocumentFactory(DocumentNumberGenerator documentNumberGenerator,
-                           UserManager userManager, PrintCostCalculator printCostCalculator) {
+                           UserManager userManager, PrintCostCalculator printCostCalculator, DocumentListenerManager documentListenerManager) {
         this.documentNumberGenerator = documentNumberGenerator;
         this.userManager = userManager;
         this.printCostCalculator = printCostCalculator;
+        this.documentListenerManager = documentListenerManager;
     }
 
     public Document create(String title, String content) {
-        return new Document(documentNumberGenerator.generate(), content, title,
+        Document document = new Document(documentNumberGenerator.generate(), content, title,
                 userManager.currentEmployee(), printCostCalculator);
-    }
+        documentListenerManager.subscribeListener(document);
+        return document;
 
+    }
 }
+
+
